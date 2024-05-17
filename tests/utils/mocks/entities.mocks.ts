@@ -46,17 +46,22 @@ const mockFakePetAdded = (): AddPetRepository.Result => {
     gender: 'M',
     breed: mockFakeBreedAdded(),
     breedAlias: 'any_breed_alias',
-    size: mockFakeSizeAdded()
+    size: mockFakeSizeAdded(),
+    castrated: false
   }
 }
 
 const mockFakeAppointPet = (): AppointPet.Result => {
   return {
-    specie: mockFakeSpecieAdded(),
-    specieAlias: 'any_specie_alias',
-    breed: mockFakeBreedAdded(),
-    breedAlias: 'any_breed_alias',
-    size: mockFakeSizeAdded()
+    isSuccess: true,
+    data: {
+      specie: mockFakeSpecieAdded(),
+      specieAlias: 'any_specie_alias',
+      breed: mockFakeBreedAdded(),
+      breedAlias: 'any_breed_alias',
+      size: mockFakeSizeAdded(),
+      castrated: false
+    }
   }
 }
 
@@ -82,14 +87,16 @@ const mockFakeDogBreedsLoaded = (): LoadDogBreedsRepository.Result => {
 const mockFakeBreedAdded = (): Exclude<LoadBreedByNameRepository.Result, undefined> => {
   return {
     id: 'any_id',
-    name: 'any_name'
+    name: 'any_name',
+    specieId: 'any_id'
   }
 }
 
 const mockFakeSizeAdded = (): Exclude<LoadSizeByNameRepository.Result, undefined> => {
   return {
     id: 'any_id',
-    name: 'any_name'
+    name: 'any_name',
+    specieId: 'any_id'
   }
 }
 

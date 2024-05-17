@@ -18,7 +18,8 @@ export const petRegistryPath = {
             petName: 'Garfield',
             gender: 'M',
             breedName: 'Doméstico de Pelo Curto',
-            size: 'Pequeno (Até 10Kg)'
+            size: 'Pequeno (Até 10Kg)',
+            castrated: true
           }
         }
       }
@@ -36,6 +37,9 @@ export const petRegistryPath = {
       },
       400: {
         $ref: '#/components/badRequest'
+      },
+      406: {
+        $ref: '#/components/notAcceptable'
       },
       500: {
         $ref: '#/components/serverError'

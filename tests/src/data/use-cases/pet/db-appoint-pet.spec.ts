@@ -1,3 +1,4 @@
+import { NotAcceptableError } from '@/application/errors'
 import { type LoadBreedByNameRepository, type LoadSizeByNameRepository, type LoadSpecieByNameRepository } from '@/data/protocols'
 import { DbAppointPet } from '@/data/use-cases/pet/db-appoint-pet'
 import { type AppointPet } from '@/domain/use-cases'
@@ -29,7 +30,8 @@ describe('DbAppointPet Use Case', () => {
   const params: AppointPet.Params = {
     specieName: 'any_name',
     breedName: 'any_name',
-    size: 'any_name'
+    size: 'any_name',
+    castrated: false
   }
 
   const petResult = {
@@ -43,12 +45,15 @@ describe('DbAppointPet Use Case', () => {
     },
     anyBreed: {
       id: 'any_id',
-      name: 'any_name'
+      name: 'any_name',
+      specieId: 'any_id'
     },
     anySize: {
       id: 'any_id',
-      name: 'any_name'
-    }
+      name: 'any_name',
+      specieId: 'any_id'
+    },
+    castrated: false
   }
 
   describe('SpecieRepository', () => {
@@ -59,11 +64,15 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(petResult.otherSpecie)
       const result = await sut.appoint(params)
       expect(result).toEqual({
-        specie: petResult.otherSpecie,
-        specieAlias: params.specieName,
-        breed: petResult.anyBreed,
-        breedAlias: '',
-        size: petResult.anySize
+        isSuccess: true,
+        data: {
+          specie: petResult.otherSpecie,
+          specieAlias: params.specieName,
+          breed: petResult.anyBreed,
+          breedAlias: '',
+          size: petResult.anySize,
+          castrated: petResult.castrated
+        }
       })
     })
 
@@ -73,11 +82,15 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(petResult.otherSpecie)
       const result = await sut.appoint({ ...params, specieName: 'Outros' })
       expect(result).toEqual({
-        specie: petResult.otherSpecie,
-        specieAlias: 'Outros',
-        breed: petResult.anyBreed,
-        breedAlias: '',
-        size: petResult.anySize
+        isSuccess: true,
+        data: {
+          specie: petResult.otherSpecie,
+          specieAlias: 'Outros',
+          breed: petResult.anyBreed,
+          breedAlias: '',
+          size: petResult.anySize,
+          castrated: petResult.castrated
+        }
       })
     })
     test('should call loadByName with correct param', async () => {
@@ -100,7 +113,8 @@ describe('DbAppointPet Use Case', () => {
       const { sut, specieRepositoryStub, breedRepositoryStub } = makeSut()
       const otherBreed = {
         id: 'any_id',
-        name: 'Sem raça'
+        name: 'Sem raça',
+        specieId: 'any_id'
       }
       jest.spyOn(specieRepositoryStub, 'loadByName')
         .mockResolvedValueOnce(undefined)
@@ -109,11 +123,15 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(otherBreed)
       const result = await sut.appoint(params)
       expect(result).toEqual({
-        specie: petResult.otherSpecie,
-        specieAlias: params.specieName,
-        breed: otherBreed,
-        breedAlias: '',
-        size: petResult.anySize
+        isSuccess: true,
+        data: {
+          specie: petResult.otherSpecie,
+          specieAlias: params.specieName,
+          breed: otherBreed,
+          breedAlias: '',
+          size: petResult.anySize,
+          castrated: petResult.castrated
+        }
       })
     })
 
@@ -125,7 +143,8 @@ describe('DbAppointPet Use Case', () => {
       }
       const withoutBreed = {
         id: 'any_id',
-        name: 'Sem raça Pássaro'
+        name: 'Sem raça Pássaro',
+        specieId: 'any_id'
       }
       jest.spyOn(specieRepositoryStub, 'loadByName')
         .mockResolvedValueOnce(specieWithoutBreed)
@@ -133,11 +152,15 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(withoutBreed)
       const result = await sut.appoint(params)
       expect(result).toEqual({
-        specie: specieWithoutBreed,
-        specieAlias: undefined,
-        breed: withoutBreed,
-        breedAlias: '',
-        size: petResult.anySize
+        isSuccess: true,
+        data: {
+          specie: specieWithoutBreed,
+          specieAlias: undefined,
+          breed: withoutBreed,
+          breedAlias: '',
+          size: petResult.anySize,
+          castrated: petResult.castrated
+        }
       })
     })
 
@@ -149,7 +172,8 @@ describe('DbAppointPet Use Case', () => {
       }
       const otherBreed = {
         id: 'any_id',
-        name: 'péduro'
+        name: 'péduro',
+        specieId: 'any_id'
       }
 
       jest.spyOn(specieRepositoryStub, 'loadByName')
@@ -159,11 +183,15 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(otherBreed)
       const result = await sut.appoint(params)
       expect(result).toEqual({
-        specie: specieWithBreed,
-        specieAlias: undefined,
-        breed: otherBreed,
-        breedAlias: params.breedName,
-        size: petResult.anySize
+        isSuccess: true,
+        data: {
+          specie: specieWithBreed,
+          specieAlias: undefined,
+          breed: otherBreed,
+          breedAlias: params.breedName,
+          size: petResult.anySize,
+          castrated: petResult.castrated
+        }
       })
     })
 
@@ -175,7 +203,8 @@ describe('DbAppointPet Use Case', () => {
       }
       const otherBreed = {
         id: 'any_id',
-        name: 'Outra raça Gato'
+        name: 'Outra raça Gato',
+        specieId: 'any_id'
       }
       jest.spyOn(specieRepositoryStub, 'loadByName')
         .mockResolvedValueOnce(specieWithBreed)
@@ -183,11 +212,38 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(otherBreed)
       const result = await sut.appoint(params)
       expect(result).toEqual({
-        specie: specieWithBreed,
-        specieAlias: undefined,
-        breed: otherBreed,
-        breedAlias: otherBreed.name,
-        size: petResult.anySize
+        isSuccess: true,
+        data: {
+          specie: specieWithBreed,
+          specieAlias: undefined,
+          breed: otherBreed,
+          breedAlias: otherBreed.name,
+          size: petResult.anySize,
+          castrated: petResult.castrated
+        }
+      })
+    })
+
+    it('Should return NotAcceptableError when dog or cat breed is wrong', async () => {
+      const { sut, specieRepositoryStub, breedRepositoryStub } = makeSut()
+      const specieWithBreed = {
+        id: 'any_id',
+        name: 'Gato'
+      }
+      const breed = {
+        id: 'any_id',
+        name: 'Abissínio',
+        specieId: 'any_dog_id'
+      }
+      jest.spyOn(specieRepositoryStub, 'loadByName')
+        .mockResolvedValueOnce(specieWithBreed)
+        .mockResolvedValueOnce(specieWithBreed)
+      jest.spyOn(breedRepositoryStub, 'loadByName')
+        .mockResolvedValueOnce(breed)
+      const result = await sut.appoint(params)
+      expect(result).toEqual({
+        isSuccess: false,
+        error: new NotAcceptableError('breed')
       })
     })
 
@@ -199,7 +255,8 @@ describe('DbAppointPet Use Case', () => {
       }
       const breed = {
         id: 'any_id',
-        name: 'Abissínio'
+        name: 'Abissínio',
+        specieId: 'any_id'
       }
       jest.spyOn(specieRepositoryStub, 'loadByName')
         .mockResolvedValueOnce(specieWithBreed)
@@ -207,11 +264,15 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(breed)
       const result = await sut.appoint(params)
       expect(result).toEqual({
-        specie: specieWithBreed,
-        specieAlias: undefined,
-        breed,
-        breedAlias: '',
-        size: petResult.anySize
+        isSuccess: true,
+        data: {
+          specie: specieWithBreed,
+          specieAlias: undefined,
+          breed,
+          breedAlias: '',
+          size: petResult.anySize,
+          castrated: petResult.castrated
+        }
       })
     })
   })
@@ -225,7 +286,8 @@ describe('DbAppointPet Use Case', () => {
       }
       const size = {
         id: 'any_id',
-        name: 'Sem porte Pássaro'
+        name: 'Sem porte Pássaro',
+        specieId: 'any_id'
       }
       jest.spyOn(specieRepositoryStub, 'loadByName')
         .mockResolvedValueOnce(specieWithoutSize)
@@ -233,11 +295,15 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(size)
       const result = await sut.appoint(params)
       expect(result).toEqual({
-        specie: specieWithoutSize,
-        specieAlias: undefined,
-        breed: petResult.anyBreed,
-        breedAlias: '',
-        size
+        isSuccess: true,
+        data: {
+          specie: specieWithoutSize,
+          specieAlias: undefined,
+          breed: petResult.anyBreed,
+          breedAlias: '',
+          size,
+          castrated: petResult.castrated
+        }
       })
     })
 
@@ -245,7 +311,8 @@ describe('DbAppointPet Use Case', () => {
       const { sut, specieRepositoryStub, sizeRepositoryStub } = makeSut()
       const size = {
         id: 'any_id',
-        name: 'Sem porte'
+        name: 'Sem porte',
+        specieId: 'any_id'
       }
       jest.spyOn(specieRepositoryStub, 'loadByName')
         .mockResolvedValueOnce(undefined)
@@ -254,11 +321,15 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(size)
       const result = await sut.appoint(params)
       expect(result).toEqual({
-        specie: petResult.otherSpecie,
-        specieAlias: params.specieName,
-        breed: petResult.anyBreed,
-        breedAlias: '',
-        size
+        isSuccess: true,
+        data: {
+          specie: petResult.otherSpecie,
+          specieAlias: params.specieName,
+          breed: petResult.anyBreed,
+          breedAlias: '',
+          size,
+          castrated: petResult.castrated
+        }
       })
     })
 
@@ -270,7 +341,8 @@ describe('DbAppointPet Use Case', () => {
       }
       const size = {
         id: 'any_id',
-        name: 'Pequeno (Até 10Kg)'
+        name: 'Pequeno (Até 10Kg)',
+        specieId: 'any_id'
       }
       jest.spyOn(specieRepositoryStub, 'loadByName')
         .mockResolvedValueOnce(specie)
@@ -278,11 +350,38 @@ describe('DbAppointPet Use Case', () => {
         .mockResolvedValueOnce(size)
       const result = await sut.appoint(params)
       expect(result).toEqual({
-        specie,
-        specieAlias: undefined,
-        breed: petResult.anyBreed,
-        breedAlias: '',
-        size
+        isSuccess: true,
+        data: {
+          specie,
+          specieAlias: undefined,
+          breed: petResult.anyBreed,
+          breedAlias: '',
+          size,
+          castrated: petResult.castrated
+        }
+      })
+    })
+
+    it('Should return NotAcceptableError when dog or cat size is wrong', async () => {
+      const { sut, specieRepositoryStub, sizeRepositoryStub } = makeSut()
+      const specieWithSize = {
+        id: 'any_id',
+        name: 'Gato'
+      }
+      const size = {
+        id: 'any_id',
+        name: 'Mini (Até 6Kg)',
+        specieId: 'any_dog_id'
+      }
+      jest.spyOn(specieRepositoryStub, 'loadByName')
+        .mockResolvedValueOnce(specieWithSize)
+        .mockResolvedValueOnce(specieWithSize)
+      jest.spyOn(sizeRepositoryStub, 'loadByName')
+        .mockResolvedValueOnce(size)
+      const result = await sut.appoint(params)
+      expect(result).toEqual({
+        isSuccess: false,
+        error: new NotAcceptableError('size')
       })
     })
   })
@@ -291,11 +390,15 @@ describe('DbAppointPet Use Case', () => {
     const { sut } = makeSut()
     const result = await sut.appoint(params)
     expect(result).toEqual({
-      specie: petResult.anySpecie,
-      specieAlias: undefined,
-      breed: petResult.anyBreed,
-      breedAlias: '',
-      size: petResult.anySize
+      isSuccess: true,
+      data: {
+        specie: petResult.anySpecie,
+        specieAlias: undefined,
+        breed: petResult.anyBreed,
+        breedAlias: '',
+        size: petResult.anySize,
+        castrated: petResult.castrated
+      }
     })
   })
 })

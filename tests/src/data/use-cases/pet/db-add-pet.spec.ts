@@ -2,10 +2,9 @@ import { NotAcceptableError } from '@/application/errors'
 import { type AddPetRepository, type LoadGuardianByIdRepository } from '@/data/protocols'
 import { DbAddPet } from '@/data/use-cases'
 import { PetGender } from '@/domain/models/pet'
-import { type AppointSpecie, type AddPet } from '@/domain/use-cases'
+import { type AddPet, type AppointPet } from '@/domain/use-cases'
 import {
   makeFakeAppointPetUseCase,
-  makeFakeAppointSpecieUseCase,
   makeFakeGuardianRepository,
   makeFakePetRepository,
   mockFakeBreedAdded,
@@ -19,13 +18,12 @@ interface SutTypes {
   sut: DbAddPet
   guardianRepositoryStub: LoadGuardianByIdRepository
   petRepositoryStub: AddPetRepository
-  appointSpecieStub: AppointSpecie
+  appointPetStub: AppointPet
 }
 
 const makeSut = (): SutTypes => {
   const guardianRepositoryStub = makeFakeGuardianRepository()
   const petRepositoryStub = makeFakePetRepository()
-  const appointSpecieStub = makeFakeAppointSpecieUseCase()
   const appointPetStub = makeFakeAppointPetUseCase()
 
   const sut = new DbAddPet({
@@ -38,7 +36,7 @@ const makeSut = (): SutTypes => {
     sut,
     guardianRepositoryStub,
     petRepositoryStub,
-    appointSpecieStub
+    appointPetStub
   }
 }
 
@@ -49,7 +47,8 @@ describe('DbAddPet Use Case', () => {
     gender: PetGender.MALE,
     petName: 'any_pet_name',
     breedName: 'any_breed_name',
-    size: 'any_size'
+    size: 'any_size',
+    castrated: false
   }
 
   describe('GuardianRepository', () => {
@@ -99,7 +98,23 @@ describe('DbAddPet Use Case', () => {
         gender: params.gender,
         breedId: mockFakeBreedAdded().id,
         breedAlias: 'any_breed_alias',
-        sizeId: mockFakeSizeAdded().id
+        sizeId: mockFakeSizeAdded().id,
+        castrated: false
+      })
+    })
+
+    it('Should return not acceptable error if wrong breed or size is provided to cat or dog', async () => {
+      const { sut, appointPetStub } = makeSut()
+      jest.spyOn(appointPetStub, 'appoint').mockResolvedValueOnce({
+        isSuccess: false,
+        error: new NotAcceptableError('any_breed_name')
+      })
+
+      const result = await sut.add(params)
+
+      expect(result).toEqual({
+        isSuccess: false,
+        error: new NotAcceptableError('any_breed_name')
       })
     })
 
