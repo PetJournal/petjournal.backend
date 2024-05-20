@@ -36,5 +36,15 @@ describe('DbLoadPetsByGuardianId', () => {
       await sut.load(guardianId)
       expect(loadSpy).toHaveBeenCalledWith('any_guardian_id')
     })
+
+    it('Should return a list of pets on success', async () => {
+      const { sut } = makeSut()
+      const guardianId = { guardianId: 'any_guardian_id' }
+      const result = await sut.load(guardianId)
+      expect(result).toEqual([{
+        petName: 'any_pet_name',
+        gender: 'any_pet_gender'
+      }])
+    })
   })
 })
