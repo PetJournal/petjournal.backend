@@ -46,7 +46,31 @@ export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepos
   }
 
   async load (guardianId: LoadPetByGuardianIdRepository.Params): Promise<LoadPetByGuardianIdRepository.Result> {
-    const pets = await db.pet.findMany({ where: { guardianId } })
+    const pets = await db.pet.findMany({
+      where: { guardianId },
+      select: {
+        id: true,
+        guardianId: true,
+        specieId: true,
+        specieAlias: true,
+        petName: true,
+        gender: true,
+        breedAlias: true,
+        breed: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        size: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        castrated: true
+      }
+    })
     return pets as Pet[]
   }
 }
