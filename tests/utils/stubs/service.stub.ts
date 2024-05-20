@@ -3,7 +3,8 @@ import {
   mockFakeGuardianLoaded,
   mockFakePetAdded,
   mockFakeCatBreedsLoaded,
-  mockFakeDogBreedsLoaded
+  mockFakeDogBreedsLoaded,
+  mockFakePetByGuardianIdLoaded
 } from '@/tests/utils'
 import {
   type EmailService,
@@ -23,7 +24,8 @@ import {
   type LoadBreedByNameRepository,
   type LoadSizeByNameRepository,
   type LoadCatBreedsRepository,
-  type LoadDogBreedsRepository
+  type LoadDogBreedsRepository,
+  type LoadPetByGuardianIdRepository
 } from '@/data/protocols'
 import { type LoadCatSizesRepository } from '@/data/protocols/db/size/load-cat-sizes-repository'
 import { type LoadDogSizesRepository } from '@/data/protocols/db/size/load-dog-sizes-repository'
@@ -217,11 +219,21 @@ const makeFakeLoadDogSizesRepository = (): LoadDogSizesRepository => {
   return new LoadDogSizesRepositoryStub()
 }
 
+const makeFakeLoadPetByGuardianIdRepository = (): LoadPetByGuardianIdRepository => {
+  class LoadPetByGuardianIdRepositoryStub implements LoadPetByGuardianIdRepository {
+    async load (guardianId: string): Promise<LoadPetByGuardianIdRepository.Result> {
+      return mockFakePetByGuardianIdLoaded()
+    }
+  }
+  return new LoadPetByGuardianIdRepositoryStub()
+}
+
 export {
   mockHashService,
   mockTokenService,
   makeFakeGuardianRepository,
   makeFakePetRepository,
+  makeFakeLoadPetByGuardianIdRepository,
   makeFakeSpecieRepository,
   makeFakeBreedRepository,
   makeFakeLoadCatBreedRepository,
