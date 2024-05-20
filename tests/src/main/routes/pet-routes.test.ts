@@ -113,3 +113,44 @@ describe('POST - /api/pet Route', () => {
     expect(response.body.size.name).toBe(res.size.name)
   })
 })
+
+describe('GET - /api/pet Route', () => {
+  it('ensure return a list of pets', async () => {
+    const { accessToken } = await makeSetup()
+    await request(app)
+      .post('/api/pet')
+      .set('Authorization', accessToken)
+      .send({
+        specieName: 'Cachorro',
+        petName: 'any pet name',
+        gender: 'M',
+        breedName: 'Afghan Hound',
+        size: 'Mini (Até 6Kg)'
+      })
+
+    const response = await request(app)
+      .get('/api/pet')
+      .set('Authorization', accessToken)
+      .send()
+
+    expect(response.status).toBe(200)
+    expect(response.body[0]).toStrictEqual({
+      id: expect.any(String),
+      guardianId: expect.any(String),
+      specieId: expect.any(String),
+      specieAlias: null,
+      petName: 'any pet name',
+      gender: 'M',
+      breedAlias: '',
+      breed: {
+        id: expect.any(String),
+        name: 'Afghan Hound'
+      },
+      size: {
+        id: expect.any(String),
+        name: 'Mini (Até 6Kg)'
+      },
+      castrated: false
+    })
+  })
+})
