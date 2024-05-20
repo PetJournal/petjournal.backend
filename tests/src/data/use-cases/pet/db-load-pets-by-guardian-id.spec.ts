@@ -28,5 +28,13 @@ describe('DbLoadPetsByGuardianId', () => {
       const promise = sut.load(guardianId)
       await expect(promise).rejects.toThrow()
     })
+
+    it('Should call load method with correct value', async () => {
+      const { sut, petRepositoryStub } = makeSut()
+      const guardianId = { guardianId: 'any_guardian_id' }
+      const loadSpy = jest.spyOn(petRepositoryStub, 'load')
+      await sut.load(guardianId)
+      expect(loadSpy).toHaveBeenCalledWith('any_guardian_id')
+    })
   })
 })
