@@ -145,7 +145,6 @@ describe('PetRepository', () => {
 
       await sut.add(data)
       const result = await sut.load(data.guardianId)
-      expect(result).toBeTruthy()
       expect(result).toEqual([{
         id: expect.any(String),
         breed: {
