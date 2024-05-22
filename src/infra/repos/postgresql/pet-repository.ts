@@ -1,7 +1,5 @@
 import { prisma as db } from '@/infra/repos/postgresql/prisma'
-
 import { type LoadPetByGuardianIdRepository, type AddPetRepository } from '@/data/protocols'
-import { type Pet } from '@/domain/models'
 
 export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepository {
   async add (params: AddPetRepository.Params): Promise<AddPetRepository.Result> {
@@ -71,6 +69,6 @@ export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepos
         castrated: true
       }
     })
-    return pets as Pet[]
+    return pets
   }
 }

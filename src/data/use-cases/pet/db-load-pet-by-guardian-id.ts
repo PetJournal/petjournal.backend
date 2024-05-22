@@ -9,6 +9,7 @@ export class DbLoadPetByGuardianId implements LoadPets {
   }
 
   async load ({ guardianId }: LoadPets.Params): Promise<LoadPets.Result> {
-    return await this.petRepository.load(guardianId)
+    const result = await this.petRepository.load(guardianId)
+    return result
   }
 }
