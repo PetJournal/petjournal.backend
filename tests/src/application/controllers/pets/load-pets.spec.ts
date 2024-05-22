@@ -1,4 +1,5 @@
 import { LoadPetsController } from '@/application/controllers'
+import { success } from '@/application/helpers'
 import { type LoadPets } from '@/domain/use-cases'
 import { makeFakeLoadPetsUseCase, makeFakeServerError } from '@/tests/utils'
 
@@ -25,5 +26,14 @@ describe('LoadPets Controller', () => {
     jest.spyOn(loadPetsStub, 'load').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(makeFakeServerError())
+  })
+
+  it('Should return a list of pets on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(success([{
+      petName: 'any_pet_name',
+      gender: 'any_pet_gender'
+    }]))
   })
 })
