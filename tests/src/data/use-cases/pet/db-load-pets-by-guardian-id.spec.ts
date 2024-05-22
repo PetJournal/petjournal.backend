@@ -42,8 +42,22 @@ describe('DbLoadPetsByGuardianId', () => {
       const guardianId = { guardianId: 'any_guardian_id' }
       const result = await sut.load(guardianId)
       expect(result).toEqual([{
+        id: expect.any(String),
+        guardianId: expect.any(String),
+        specieId: expect.any(String),
+        specieAlias: '',
         petName: 'any_pet_name',
-        gender: 'any_pet_gender'
+        gender: 'any_pet_gender',
+        breedAlias: '',
+        breed: {
+          id: 'any_id',
+          name: 'any_name'
+        },
+        size: {
+          id: 'any_id',
+          name: 'any_name'
+        },
+        castrated: false
       }])
     })
   })
