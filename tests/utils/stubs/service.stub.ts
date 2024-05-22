@@ -81,9 +81,13 @@ UpdateVerificationTokenRepository => {
 }
 
 const makeFakePetRepository = (): AddPetRepository => {
-  class PetRepositoryStub implements AddPetRepository {
+  class PetRepositoryStub implements AddPetRepository, LoadPetByGuardianIdRepository {
     async add (petData: AddPetRepository.Params): Promise<AddPetRepository.Result> {
       return mockFakePetAdded()
+    }
+
+    async load (guardianId: string): Promise<LoadPetByGuardianIdRepository.Result> {
+      return mockFakePetByGuardianIdLoaded()
     }
   }
 
