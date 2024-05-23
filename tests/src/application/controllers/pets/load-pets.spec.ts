@@ -34,7 +34,10 @@ describe('LoadPets Controller', () => {
     expect(httpResponse).toEqual(success([{
       id: expect.any(String),
       guardianId: expect.any(String),
-      specieId: expect.any(String),
+      specie: {
+        id: expect.any(String),
+        name: 'any_name'
+      },
       specieAlias: '',
       petName: 'any_pet_name',
       gender: 'any_pet_gender',

@@ -23,7 +23,10 @@ export const loadPetsPath = {
                 {
                   id: 'c2309177-49f0-428e-a623-5e72c3ba0ca0',
                   guardianId: 'd7eca09d-228b-4d49-8b70-68170aa4db71',
-                  specieId: '8dea7a22-02e9-4adf-a47e-042bf537f822',
+                  specie: {
+                    id: '8dea7a22-02e9-4adf-a47e-042bf537f822',
+                    name: 'Gato'
+                  },
                   specieAlias: null,
                   petName: 'Garfield',
                   gender: 'M',
@@ -41,7 +44,10 @@ export const loadPetsPath = {
                 {
                   id: '4fc83c53-0d68-46b9-8d04-0ed4f208233d',
                   guardianId: 'd7eca09d-228b-4d49-8b70-68170aa4db71',
-                  specieId: '0f2d53f6-09d5-4aa8-8b6c-487ee2524ffc',
+                  specie: {
+                    id: '0f2d53f6-09d5-4aa8-8b6c-487ee2524ffc',
+                    name: 'Cachorro'
+                  },
                   specieAlias: null,
                   petName: 'Chico',
                   gender: 'M',

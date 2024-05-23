@@ -161,7 +161,10 @@ describe('PetRepository', () => {
           name: 'any_name'
         },
         specieAlias: 'any_specie_alias',
-        specieId: expect.any(String)
+        specie: {
+          id: expect.any(String),
+          name: 'any_name'
+        }
       }])
     })
   })

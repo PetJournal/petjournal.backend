@@ -56,7 +56,10 @@ const mockFakePetByGuardianIdLoaded = (): Exclude<LoadPetByGuardianIdRepository.
   return [{
     id: 'any_id',
     guardianId: 'any_guardian_id',
-    specieId: 'any_specie_id',
+    specie: {
+      id: 'any_id',
+      name: 'any_name'
+    },
     specieAlias: '',
     petName: 'any_pet_name',
     gender: 'any_pet_gender',

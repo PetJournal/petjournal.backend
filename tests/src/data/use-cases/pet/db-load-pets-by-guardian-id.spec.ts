@@ -44,7 +44,10 @@ describe('DbLoadPetsByGuardianId', () => {
       expect(result).toEqual([{
         id: expect.any(String),
         guardianId: expect.any(String),
-        specieId: expect.any(String),
+        specie: {
+          id: expect.any(String),
+          name: 'any_name'
+        },
         specieAlias: '',
         petName: 'any_pet_name',
         gender: 'any_pet_gender',

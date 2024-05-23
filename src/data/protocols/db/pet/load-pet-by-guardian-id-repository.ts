@@ -8,7 +8,10 @@ export namespace LoadPetByGuardianIdRepository {
   export type Result = Array<{
     id: string
     guardianId: string
-    specieId: string
+    specie: {
+      id: string
+      name: string
+    }
     specieAlias: string | null
     petName: string
     gender: string

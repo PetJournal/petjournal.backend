@@ -49,7 +49,12 @@ export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepos
       select: {
         id: true,
         guardianId: true,
-        specieId: true,
+        specie: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
         specieAlias: true,
         petName: true,
         gender: true,

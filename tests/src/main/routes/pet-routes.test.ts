@@ -137,7 +137,10 @@ describe('GET - /api/pet Route', () => {
     expect(response.body[0]).toStrictEqual({
       id: expect.any(String),
       guardianId: expect.any(String),
-      specieId: expect.any(String),
+      specie: {
+        id: expect.any(String),
+        name: 'Cachorro'
+      },
       specieAlias: null,
       petName: 'any pet name',
       gender: 'M',
