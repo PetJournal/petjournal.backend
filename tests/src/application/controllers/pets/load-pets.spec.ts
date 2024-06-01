@@ -1,5 +1,5 @@
 import { LoadPetsController } from '@/application/controllers'
-import { success } from '@/application/helpers'
+import { type HttpRequest, success, noContent } from '@/application/helpers'
 import { type LoadPets } from '@/domain/use-cases'
 import { makeFakeLoadPetsUseCase, makeFakeServerError } from '@/tests/utils'
 
@@ -21,26 +21,34 @@ const makeSut = (): SutTypes => {
 }
 
 describe('LoadPets Controller', () => {
+  const fakeHttpRequest: HttpRequest = {
+    userId: 'any_guardian_id'
+  }
+
   it('Should returns 500 (ServerError) if LoadPets throws', async () => {
     const { sut, loadPetsStub } = makeSut()
     jest.spyOn(loadPetsStub, 'load').mockRejectedValueOnce(new Error())
-    const httpResponse = await sut.handle({})
+    const httpResponse = await sut.handle(fakeHttpRequest)
     expect(httpResponse).toEqual(makeFakeServerError())
   })
 
-  it('Should returns an empty array if there are not pets registered', async () => {
+  it('Should return statusCode 204 (noContent) if LoadPets returns an empty array', async () => {
     const { sut, loadPetsStub } = makeSut()
     jest.spyOn(loadPetsStub, 'load').mockResolvedValueOnce([])
-    const httpResponse = await sut.handle({})
-    expect(httpResponse).toEqual({
-      body: [],
-      statusCode: 200
-    })
+    const httpResponse = await sut.handle(fakeHttpRequest)
+    expect(httpResponse).toEqual(noContent())
+  })
+
+  it('Should call LoadPets with correct value', async () => {
+    const { sut, loadPetsStub } = makeSut()
+    const loadPetsSpy = jest.spyOn(loadPetsStub, 'load')
+    await sut.handle(fakeHttpRequest)
+    expect(loadPetsSpy).toHaveBeenCalledWith({ guardianId: 'any_guardian_id' })
   })
 
   it('Should return a list of pets on success', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.handle({})
+    const httpResponse = await sut.handle(fakeHttpRequest)
     expect(httpResponse).toEqual(success([{
       id: expect.any(String),
       guardianId: expect.any(String),
