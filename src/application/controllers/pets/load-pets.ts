@@ -1,4 +1,4 @@
-import { serverError, success, type HttpRequest, type HttpResponse } from '@/application/helpers'
+import { noContent, serverError, success, type HttpRequest, type HttpResponse } from '@/application/helpers'
 import { type Controller } from '@/application/protocols'
 import { type LoadPets } from '@/domain/use-cases'
 
@@ -13,6 +13,9 @@ export class LoadPetsController implements Controller {
     try {
       const guardianId = httpRequest.userId as string
       const result = await this.loadPets.load({ guardianId })
+      if (!result.length) {
+        return noContent()
+      }
       return success(result)
     } catch (error) {
       return serverError(error as Error)

@@ -41,6 +41,11 @@ export const success = (data: any): HttpResponse => ({
   body: data
 })
 
+export const noContent = (): HttpResponse => ({
+  statusCode: 204,
+  body: null
+})
+
 export const create = (data: any): HttpResponse => ({
   statusCode: 201,
   body: data
