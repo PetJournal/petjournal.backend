@@ -101,6 +101,7 @@ describe('PetRepository', () => {
       })
     })
   })
+
   describe('LoadPets method', () => {
     it('Should return a list of pets', async () => {
       const sut = makeSut()
@@ -166,6 +167,22 @@ describe('PetRepository', () => {
           name: 'any_name'
         }
       }])
+    })
+
+    it('Should LoadPets method return an empty array if there are no pets registered', async () => {
+      const sut = makeSut()
+      const guardian = await db.guardian.create({
+        data: {
+          firstName: 'any_first_name',
+          lastName: 'any_last_name',
+          email: 'any_email',
+          password: 'any_password',
+          phone: 'any_phone',
+          verificationToken: 'any_token'
+        }
+      })
+      const result = await sut.load(guardian.id)
+      expect(result).toEqual([])
     })
   })
 })
