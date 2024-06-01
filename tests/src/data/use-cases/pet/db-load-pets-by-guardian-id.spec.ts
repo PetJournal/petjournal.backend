@@ -37,6 +37,14 @@ describe('DbLoadPetsByGuardianId', () => {
       expect(loadSpy).toHaveBeenCalledWith('any_guardian_id')
     })
 
+    it('Should petRepository return an empty array if there are no pets registered', async () => {
+      const { sut, petRepositoryStub } = makeSut()
+      const guardianId = { guardianId: 'any_guardian_id' }
+      jest.spyOn(petRepositoryStub, 'load').mockResolvedValueOnce([])
+      const httpResponse = await sut.load(guardianId)
+      expect(httpResponse).toEqual([])
+    })
+
     it('Should return a list of pets on success', async () => {
       const { sut } = makeSut()
       const guardianId = { guardianId: 'any_guardian_id' }
