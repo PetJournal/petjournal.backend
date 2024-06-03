@@ -36,10 +36,7 @@ describe('LoadPets Controller', () => {
     const { sut, loadPetsStub } = makeSut()
     jest.spyOn(loadPetsStub, 'load').mockResolvedValueOnce([])
     const httpResponse = await sut.handle(fakeHttpRequest)
-    expect(httpResponse).toEqual({
-      statusCode: 200,
-      body: []
-    })
+    expect(httpResponse).toEqual(success([]))
   })
 
   it('Should call LoadPets with correct value', async () => {
