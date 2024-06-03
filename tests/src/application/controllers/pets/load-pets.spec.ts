@@ -32,6 +32,16 @@ describe('LoadPets Controller', () => {
     expect(httpResponse).toEqual(makeFakeServerError())
   })
 
+  it('Should LoadPets return an empty array if there are not pets registered', async () => {
+    const { sut, loadPetsStub } = makeSut()
+    jest.spyOn(loadPetsStub, 'load').mockResolvedValueOnce([])
+    const httpResponse = await sut.handle(fakeHttpRequest)
+    expect(httpResponse).toEqual({
+      statusCode: 200,
+      body: []
+    })
+  })
+
   it('Should call LoadPets with correct value', async () => {
     const { sut, loadPetsStub } = makeSut()
     const loadPetsSpy = jest.spyOn(loadPetsStub, 'load')
