@@ -1,8 +1,7 @@
 import { prisma as db } from '@/infra/repos/postgresql/prisma'
+import { type LoadPetByGuardianIdRepository, type AddPetRepository } from '@/data/protocols'
 
-import { type AddPetRepository } from '@/data/protocols'
-
-export class PetRepository implements AddPetRepository {
+export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepository {
   async add (params: AddPetRepository.Params): Promise<AddPetRepository.Result> {
     try {
       const pet = await db.pet.create({
@@ -42,5 +41,39 @@ export class PetRepository implements AddPetRepository {
     } catch (error) {
       return undefined
     }
+  }
+
+  async load (guardianId: LoadPetByGuardianIdRepository.Params): Promise<LoadPetByGuardianIdRepository.Result> {
+    const pets = await db.pet.findMany({
+      where: { guardianId },
+      select: {
+        id: true,
+        guardianId: true,
+        specie: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        specieAlias: true,
+        petName: true,
+        gender: true,
+        breedAlias: true,
+        breed: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        size: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        castrated: true
+      }
+    })
+    return pets
   }
 }

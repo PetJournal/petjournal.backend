@@ -12,10 +12,11 @@ import {
   type LoadCatBreeds,
   type LoadDogBreeds,
   type LoadCatSizes,
-  type LoadDogSizes
+  type LoadDogSizes,
+  type LoadPets
 } from '@/domain/use-cases'
 import { mockTokenService } from '@/tests/utils/stubs/service.stub'
-import { mockFakeAppointPet, mockFakePetAdded, mockFakeSpecieAdded } from '../mocks'
+import { mockFakeAppointPet, mockFakePetAdded, mockFakePetByGuardianIdLoaded, mockFakeSpecieAdded } from '../mocks'
 
 const mockGuardianUseCase = {
   id: 'any_id',
@@ -102,6 +103,15 @@ const makeFakeAddPetUseCase = (): AddPet => {
   return new AddGuardianStub()
 }
 
+const makeFakeLoadPetsUseCase = (): LoadPets => {
+  class LoadPetsStub implements LoadPets {
+    async load (guardianId: LoadPets.Params): Promise<LoadPets.Result> {
+      return mockFakePetByGuardianIdLoaded()
+    }
+  }
+  return new LoadPetsStub()
+}
+
 const makeFakeAppointSpecieUseCase = (): AppointSpecie => {
   class AppointOtherSpecieStub implements AppointSpecie {
     async appoint (specieName: AppointSpecie.Params): Promise<AppointSpecie.Result> {
@@ -184,6 +194,7 @@ const makeLoadDogBreedsUseCase = (): LoadDogBreeds => {
 export {
   makeFakeAddGuardianUseCase,
   makeFakeAddPetUseCase,
+  makeFakeLoadPetsUseCase,
   makeFakeAuthenticationUseCase,
   makeFakeForgetPasswordUseCase,
   makeFakeChangePasswordUseCase,
