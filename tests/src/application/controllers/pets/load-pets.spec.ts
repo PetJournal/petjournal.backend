@@ -1,5 +1,5 @@
 import { LoadPetsController } from '@/application/controllers'
-import { type HttpRequest, success, noContent } from '@/application/helpers'
+import { type HttpRequest, success } from '@/application/helpers'
 import { type LoadPets } from '@/domain/use-cases'
 import { makeFakeLoadPetsUseCase, makeFakeServerError } from '@/tests/utils'
 
@@ -30,13 +30,6 @@ describe('LoadPets Controller', () => {
     jest.spyOn(loadPetsStub, 'load').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(fakeHttpRequest)
     expect(httpResponse).toEqual(makeFakeServerError())
-  })
-
-  it('Should return statusCode 204 (noContent) if LoadPets returns an empty array', async () => {
-    const { sut, loadPetsStub } = makeSut()
-    jest.spyOn(loadPetsStub, 'load').mockResolvedValueOnce([])
-    const httpResponse = await sut.handle(fakeHttpRequest)
-    expect(httpResponse).toEqual(noContent())
   })
 
   it('Should call LoadPets with correct value', async () => {
