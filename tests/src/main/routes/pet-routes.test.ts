@@ -156,4 +156,15 @@ describe('GET - /api/pet Route', () => {
       castrated: false
     })
   })
+
+  it('ensure return an empty array if there are not pets registered', async () => {
+    const { accessToken } = await makeSetup()
+    const response = await request(app)
+      .get('/api/pet')
+      .set('Authorization', accessToken)
+      .send()
+
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual([])
+  })
 })
