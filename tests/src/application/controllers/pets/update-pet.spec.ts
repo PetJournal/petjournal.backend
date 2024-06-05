@@ -74,14 +74,14 @@ describe('UpdatePet Controller', () => {
 
       expect(httpResponse).toEqual(badRequest(new Error()))
     })
-
+    
     it('Should call Validation with correct values', async () => {
       const { sut, validationStub } = makeSut()
       const validateSpy = jest.spyOn(validationStub, 'validate')
 
       await sut.handle(httpRequest)
 
-      expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+      expect(validateSpy).toHaveBeenCalledWith({...httpRequest.body, ...httpRequest.params})
     })
   })
 
@@ -97,8 +97,15 @@ describe('UpdatePet Controller', () => {
   it('should return 200 (success) if valid data is provided', async () => {
     const { sut } = makeSut()
 
-    const httpResponse = await sut.handle(httpRequest)
-
-    expect(httpResponse).toEqual(success(mockFakePetUpdated()))
+    const entries = Object.entries(httpRequest.body);
+    const f = async (prefix: any, entries: any) => {
+        for (let i = 0; i < entries.length; i++) {
+            Object.assign(httpRequest, { body: { ...Object.fromEntries([...prefix, entries[i]]) } })
+            const httpResponse = await sut.handle(httpRequest)
+            expect(httpResponse).toEqual(success(mockFakePetUpdated()))
+            f([...prefix, entries[i]], entries.slice(i + 1));
+        }
+    }
+    await f([], entries);
   })
 })
