@@ -53,6 +53,21 @@ interface PetRegistryRequest {
   }
 }
 
+interface UpdatePetRequest {
+  userId?: string
+  body: {
+    guardianId: string
+    specieName: string
+    petName: string
+    gender: string
+    breedName: string
+    size: string
+  }
+  params: {
+    petId: string
+  }
+}
+
 export {
   type AuthMiddlewareRequest,
   type LoginRequest,
@@ -60,5 +75,6 @@ export {
   type ForgetPasswordRequest,
   type ChangePasswordRequest,
   type WaitingCodeRequest,
-  type PetRegistryRequest
+  type PetRegistryRequest,
+  type UpdatePetRequest
 }

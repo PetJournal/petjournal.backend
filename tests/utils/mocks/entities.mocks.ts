@@ -1,5 +1,6 @@
 import {
   type AddPetRepository,
+  type UpdatePetRepository,
   type AddGuardianRepository,
   type LoadGuardianByIdRepository,
   type LoadSpecieByIdRepository,
@@ -76,6 +77,20 @@ const mockFakePetByGuardianIdLoaded = (): Exclude<LoadPetByGuardianIdRepository.
   }]
 }
 
+const mockFakePetUpdated = (): UpdatePetRepository.Result => {
+  return {
+    id: 'any_id',
+    guardian: mockFakeGuardianAdded(),
+    specie: mockFakeSpecieAdded(),
+    petName: 'any_pet_name',
+    gender: 'M',
+    breed: mockFakeBreedAdded(),
+    breedAlias: 'any_breed_alias',
+    size: mockFakeSizeAdded(),
+    castrated: false
+  }
+}
+
 const mockFakeAppointPet = (): AppointPet.Result => {
   return {
     isSuccess: true,
@@ -145,6 +160,7 @@ export {
   mockFakeGuardianLoaded,
   mockFakePetAdded,
   mockFakePetByGuardianIdLoaded,
+  mockFakePetUpdated,
   mockFakeSpecieAdded,
   mockFakeCatBreedsLoaded,
   mockFakeDogBreedsLoaded,
