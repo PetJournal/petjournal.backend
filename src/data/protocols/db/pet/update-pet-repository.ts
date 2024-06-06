@@ -5,20 +5,20 @@ import { type Breed } from '@/domain/models/breed'
 import { type Size } from '@/domain/models/size'
 
 export interface UpdatePetRepository {
-  add: (params: UpdatePetRepository.Params) => Promise<UpdatePetRepository.Result>
+  update: (params: UpdatePetRepository.Params) => Promise<UpdatePetRepository.Result>
 }
 
 export namespace UpdatePetRepository {
   export interface Params {
-    guardianId: string
-    specieId: string
+    petId: string
+    specieId?: string
+    breedId?: string
+    sizeId?: string
     specieAlias?: string
-    petName: string
-    gender: PetGender
-    breedId: string
-    breedAlias: string
-    sizeId: string
-    castrated: boolean
+    breedAlias?: string
+    petName?: string
+    gender?: PetGender
+    castrated?: boolean
   }
 
   type GuardianResultDb = Pick<Guardian, 'firstName' | 'lastName' | 'email' | 'phone'> & {
