@@ -48,7 +48,8 @@ describe('DbAddPet Use Case', () => {
     petName: 'any_pet_name',
     breedName: 'any_breed_name',
     size: 'any_size',
-    castrated: false
+    castrated: false,
+    dateOfBirth: new Date(2000, 10, 23)
   }
 
   describe('GuardianRepository', () => {
@@ -99,7 +100,8 @@ describe('DbAddPet Use Case', () => {
         breedId: mockFakeBreedAdded().id,
         breedAlias: 'any_breed_alias',
         sizeId: mockFakeSizeAdded().id,
-        castrated: false
+        castrated: false,
+        dateOfBirth: params.dateOfBirth
       })
     })
 

@@ -48,7 +48,8 @@ const mockFakePetAdded = (): AddPetRepository.Result => {
     breed: mockFakeBreedAdded(),
     breedAlias: 'any_breed_alias',
     size: mockFakeSizeAdded(),
-    castrated: false
+    castrated: false,
+    dateOfBirth: new Date(2000, 10, 23)
   }
 }
 

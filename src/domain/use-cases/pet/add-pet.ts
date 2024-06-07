@@ -15,6 +15,7 @@ export namespace AddPet {
     breedName: string
     size: string
     castrated: boolean
+    dateOfBirth: Date
   }
 
   export interface Result {

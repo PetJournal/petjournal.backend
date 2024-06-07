@@ -47,7 +47,7 @@ export class DbAddPet implements AddPet {
         error: appointResult.error
       }
     }
-    const { petName, gender } = petData
+    const { petName, gender, dateOfBirth } = petData
     const pet = await this.petRepository.add({
       guardianId: guardian.id,
       specieId: appointResult.data?.specie.id as string,
@@ -57,7 +57,8 @@ export class DbAddPet implements AddPet {
       breedId: appointResult.data?.breed.id as string,
       breedAlias: appointResult.data?.breedAlias as string,
       sizeId: appointResult.data?.size.id as string,
-      castrated: appointResult.data?.castrated as boolean
+      castrated: appointResult.data?.castrated as boolean,
+      dateOfBirth
     })
     return {
       isSuccess: true,
@@ -71,7 +72,8 @@ export class DbAddPet implements AddPet {
         breed: pet?.breed as Breed & { id: string },
         breedAlias: pet?.breedAlias as string,
         size: pet?.size as Size & { id: string },
-        castrated: pet?.castrated as boolean
+        castrated: pet?.castrated as boolean,
+        dateOfBirth: pet?.dateOfBirth as Date
       }
     }
   }

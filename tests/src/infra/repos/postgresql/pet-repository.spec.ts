@@ -24,7 +24,8 @@ describe('PetRepository', () => {
         breedId: 'invalid_breed_id',
         breedAlias: 'invalid_breed_alias',
         sizeId: 'invalid_size_id',
-        castrated: false
+        castrated: false,
+        dateOfBirth: new Date(2000, 10, 23)
       }
 
       const specie = await sut.add(data)
@@ -70,7 +71,8 @@ describe('PetRepository', () => {
         breedId: breed.id,
         breedAlias: 'any_breed_alias',
         sizeId: size.id,
-        castrated: false
+        castrated: false,
+        dateOfBirth: new Date(2000, 10, 23)
       }
 
       const specie = await sut.add(data)
@@ -141,7 +143,8 @@ describe('PetRepository', () => {
         breedId: breed.id,
         breedAlias: 'any_breed_alias',
         sizeId: size.id,
-        castrated: false
+        castrated: false,
+        dateOfBirth: new Date(2000, 10, 23)
       }
 
       await sut.add(data)
