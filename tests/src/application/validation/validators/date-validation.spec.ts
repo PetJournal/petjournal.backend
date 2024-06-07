@@ -50,4 +50,10 @@ describe('DateValidation', () => {
     const error = sut.validate({ date: 'invalid_date' })
     expect(error).toEqual(new InvalidParamError('date'))
   })
+
+  it('Should return void if validator returns true', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ date: 'valid_date' })
+    expect(error).toBeFalsy()
+  })
 })
