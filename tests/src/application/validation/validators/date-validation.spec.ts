@@ -43,4 +43,11 @@ describe('DateValidation', () => {
     jest.spyOn(dateValidatorStub, 'isValid').mockImplementationOnce(() => { throw new Error() })
     expect(() => { sut.validate({ date: 'valid_date' }) }).toThrow()
   })
+
+  it('Should return InvalidParamError if validator returns false', () => {
+    const { sut, dateValidatorStub } = makeSut()
+    jest.spyOn(dateValidatorStub, 'isValid').mockReturnValueOnce(false)
+    const error = sut.validate({ date: 'invalid_date' })
+    expect(error).toEqual(new InvalidParamError('date'))
+  })
 })
