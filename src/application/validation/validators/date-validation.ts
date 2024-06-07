@@ -16,6 +16,9 @@ export class DateValidation implements Validation {
       return new InvalidParamError(this.fieldName)
     }
 
-    this.dateValidator.isValid(input[this.fieldName])
+    const isValid = this.dateValidator.isValid(input[this.fieldName])
+    if (!isValid) {
+      return new InvalidParamError(this.fieldName)
+    }
   }
 }
