@@ -1,14 +1,26 @@
 import { InvalidParamError } from '@/application/errors'
-import { DateValidation } from '@/application/validation'
+import { DateValidation, type DateValidator } from '@/application/validation'
 
 interface SutTypes {
   sut: DateValidation
+  dateValidatorStub: DateValidator
+}
+
+const makeFakeDateValidator = (): DateValidator => {
+  class DateValidatorStub implements DateValidator {
+    isValid (date: string): boolean {
+      return true
+    }
+  }
+  return new DateValidatorStub()
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new DateValidation('date')
+  const dateValidatorStub = makeFakeDateValidator()
+  const sut = new DateValidation('date', dateValidatorStub)
   return {
-    sut
+    sut,
+    dateValidatorStub
   }
 }
 
@@ -17,5 +29,12 @@ describe('DateValidation', () => {
     const { sut } = makeSut()
     const error = sut.validate({ date: 1 })
     expect(error).toEqual(new InvalidParamError('date'))
+  })
+
+  it('Should call validator with correct value', () => {
+    const { sut, dateValidatorStub } = makeSut()
+    const validSpy = jest.spyOn(dateValidatorStub, 'isValid')
+    sut.validate({ date: 'valid_date' })
+    expect(validSpy).toHaveBeenCalledWith('valid_date')
   })
 })
