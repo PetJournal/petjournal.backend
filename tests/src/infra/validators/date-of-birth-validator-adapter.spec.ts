@@ -12,4 +12,10 @@ describe('DateOfBirthValidatorAdapter', () => {
     const isValid = sut.isValid('2021-13-01')
     expect(isValid).toBe(false)
   })
+
+  it('Should return true if date is a valid date', () => {
+    const sut = new DateOfBirthValidatorAdapter()
+    const isValid = sut.isValid('2021-01-01T00:00:00Z')
+    expect(isValid).toBe(true)
+  })
 })
