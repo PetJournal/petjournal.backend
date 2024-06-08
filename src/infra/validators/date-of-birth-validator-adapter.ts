@@ -1,11 +1,11 @@
 import { type DateValidator } from '@/application/validation'
-
+import validator from 'validator'
 export class DateOfBirthValidatorAdapter implements DateValidator {
   isValid (date: string): boolean {
-    const dateToValidate = new Date(date)
-    if (isNaN(dateToValidate.getTime())) {
+    if (isNaN(new Date(date).getTime())) {
       return false
     }
-    return true
+    const isValid = validator.isISO8601(date)
+    return isValid
   }
 }
