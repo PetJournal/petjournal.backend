@@ -73,7 +73,8 @@ export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepos
             name: true
           }
         },
-        castrated: true
+        castrated: true,
+        dateOfBirth: true
       }
     })
     return pets

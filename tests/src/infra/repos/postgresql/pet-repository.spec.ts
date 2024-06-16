@@ -168,7 +168,8 @@ describe('PetRepository', () => {
         specie: {
           id: expect.any(String),
           name: 'any_name'
-        }
+        },
+        dateOfBirth: new Date(2000, 10, 23)
       }])
     })
 

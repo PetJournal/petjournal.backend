@@ -176,7 +176,8 @@ describe('GET - /api/pet Route', () => {
         id: expect.any(String),
         name: 'Mini (Até 6Kg)'
       },
-      castrated: true
+      castrated: true,
+      dateOfBirth: '2024-06-05T23:40:42.628Z'
     }])
   })
 
