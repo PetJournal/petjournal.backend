@@ -17,9 +17,12 @@ export class PetRegistryController implements Controller {
       if (error) {
         return badRequest(error)
       }
+
       const guardianId = httpRequest.userId as string
       const { specieName, petName, breedName, size, castrated } = httpRequest.body
       const gender = httpRequest.body.gender.toUpperCase()
+      const dateOfBirth = new Date(httpRequest.body.dateOfBirth)
+
       const result = await this.addPet.add({
         guardianId,
         specieName,
@@ -27,7 +30,8 @@ export class PetRegistryController implements Controller {
         gender,
         breedName,
         size,
-        castrated
+        castrated,
+        dateOfBirth
       })
       if (!result.isSuccess) {
         return notAcceptable(result.error as Error)
@@ -42,7 +46,8 @@ export class PetRegistryController implements Controller {
         breed: result.data?.breed,
         breedAlias: result.data?.breedAlias,
         size: result.data?.size,
-        castrated: result.data?.castrated
+        castrated: result.data?.castrated,
+        dateOfBirth: result.data?.dateOfBirth
       })
     } catch (error) {
       return serverError(error as Error)

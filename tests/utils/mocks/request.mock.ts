@@ -88,7 +88,8 @@ const makeFakePetRegistryRequest = (): PetRegistryRequest => {
     petName: 'any_name',
     gender: PetGender.MALE,
     breedName: 'valid_breed_name',
-    size: 'any_size'
+    size: 'any_size',
+    dateOfBirth: new Date(2000, 10, 23)
   }
 
   return { body }

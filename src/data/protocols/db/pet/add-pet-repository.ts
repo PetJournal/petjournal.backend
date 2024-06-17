@@ -19,6 +19,7 @@ export namespace AddPetRepository {
     breedAlias: string
     sizeId: string
     castrated: boolean
+    dateOfBirth: Date
   }
 
   type GuardianResultDb = Pick<Guardian, 'firstName' | 'lastName' | 'email' | 'phone'> & {
@@ -48,5 +49,6 @@ export namespace AddPetRepository {
     breedAlias: string
     size: SizeResultDb
     castrated: boolean
+    dateOfBirth: Date
   } | undefined
 }

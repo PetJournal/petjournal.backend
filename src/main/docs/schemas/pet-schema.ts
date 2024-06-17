@@ -18,6 +18,7 @@ export const petSchema = {
     size: {
       $ref: '#/schemas/size'
     },
-    castrated: { type: 'boolean' }
+    castrated: { type: 'boolean' },
+    dateOfBirth: { type: 'string' }
   }
 }
