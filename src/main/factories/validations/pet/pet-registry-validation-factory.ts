@@ -1,10 +1,10 @@
 import { type Validation } from '@/application/protocols'
-import { BreedValidation, NameValidation, PetGenderValidation, RequiredFieldValidation, SizeValidation, ValidationComposite } from '@/application/validation'
-import { NameValidatorAdapter, BreedValidatorAdapter, SizeValidatorAdapter } from '@/infra/validators'
+import { BreedValidation, DateValidation, NameValidation, PetGenderValidation, RequiredFieldValidation, SizeValidation, ValidationComposite } from '@/application/validation'
+import { NameValidatorAdapter, BreedValidatorAdapter, SizeValidatorAdapter, DateOfBirthValidatorAdapter } from '@/infra/validators'
 
 export const makePetRegistryValidation = (): ValidationComposite => {
   const validations: Validation[] = []
-  const requiredFields = ['specieName', 'petName', 'gender', 'breedName', 'size']
+  const requiredFields = ['specieName', 'petName', 'gender', 'breedName', 'size', 'dateOfBirth']
 
   for (const field of requiredFields) {
     validations.push(new RequiredFieldValidation(field))
@@ -15,5 +15,6 @@ export const makePetRegistryValidation = (): ValidationComposite => {
   validations.push(new PetGenderValidation('gender'))
   validations.push(new BreedValidation('breedName', new BreedValidatorAdapter()))
   validations.push(new SizeValidation('size', new SizeValidatorAdapter()))
+  validations.push(new DateValidation('dateOfBirth', new DateOfBirthValidatorAdapter()))
   return new ValidationComposite(validations)
 }

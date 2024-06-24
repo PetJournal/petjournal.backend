@@ -39,7 +39,8 @@ export const loadPetsPath = {
                     id: '23c6db6c-2b77-4c80-91db-c75ed08577cf',
                     name: 'Pequeno (Até 10Kg)'
                   },
-                  castrated: true
+                  castrated: true,
+                  dateOfBirth: '2021-01-01T00:00:00Z'
                 },
                 {
                   id: '4fc83c53-0d68-46b9-8d04-0ed4f208233d',
@@ -60,7 +61,8 @@ export const loadPetsPath = {
                     id: '794612ce-fbac-40a7-89f6-87a583547211',
                     name: 'Médio (15 à 24Kg)'
                   },
-                  castrated: false
+                  castrated: false,
+                  dateOfBirth: '2021-01-01T00:00:00Z'
                 }
               ]
 

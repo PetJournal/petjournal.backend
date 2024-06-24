@@ -14,7 +14,8 @@ export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepos
           breedId: params.breedId,
           breedAlias: params.breedAlias,
           sizeId: params.sizeId,
-          castrated: params.castrated
+          castrated: params.castrated,
+          dateOfBirth: params.dateOfBirth
         },
         select: {
           id: true,
@@ -34,7 +35,8 @@ export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepos
           breed: true,
           breedAlias: true,
           size: true,
-          castrated: true
+          castrated: true,
+          dateOfBirth: true
         }
       })
       return pet
@@ -102,7 +104,8 @@ export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepos
             name: true
           }
         },
-        castrated: true
+        castrated: true,
+        dateOfBirth: true
       }
     })
     return pets

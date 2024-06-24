@@ -6,8 +6,16 @@ beforeEach(async () => { await PrismaHelper.connect() })
 
 afterEach(async () => { await PrismaHelper.disconnect() })
 
-const makeSetup = async (): Promise<{ accessToken: string }> => {
-  await request(app)
+interface FakeUser {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+}
+
+const makeSetup = async (): Promise<{ accessToken: string, fakeUser: FakeUser }> => {
+  const resSignUp = await request(app)
     .post('/api/signup')
     .send({
       firstName: 'John',
@@ -19,7 +27,7 @@ const makeSetup = async (): Promise<{ accessToken: string }> => {
       isPrivacyPolicyAccepted: true
     })
 
-  const { body } = await request(app)
+  const resLogin = await request(app)
     .post('/api/login')
     .send({
       email: 'johndoe@email.com',
@@ -84,33 +92,46 @@ const makeSetup = async (): Promise<{ accessToken: string }> => {
       }
   })
 
-  return body
+  return { accessToken: resLogin.body.accessToken, fakeUser: resSignUp.body }
 }
 
 describe('POST - /api/pet Route', () => {
   it.each([
-    [{ specieName: 'Cachorro', petName: 'any pet name', gender: 'M', breedName: 'Afghan Hound', size: 'Mini (Até 6Kg)' }, { status: 201, specie: { name: 'Cachorro' }, specieAlias: null, petName: 'any pet name', gender: 'M', breed: { name: 'Afghan Hound' }, size: { name: 'Mini (Até 6Kg)' } }],
-    [{ specieName: 'Inseto', petName: 'any pet name', gender: 'M', breedName: 'Sem raça', size: 'Sem porte' }, { status: 201, specie: { name: 'Outros' }, specieAlias: 'Inseto', petName: 'any pet name', gender: 'M', breed: { name: 'Sem raça' }, size: { name: 'Sem porte' } }],
-    [{ specieName: 'Cachorro', petName: 'any pet name', gender: 'F', breedName: 'Sem raça Cachorro', size: 'Pequeno (6 à 14Kg)' }, { status: 201, specie: { name: 'Cachorro' }, specieAlias: null, petName: 'any pet name', gender: 'F', breed: { name: 'Sem raça Cachorro' }, size: { name: 'Pequeno (6 à 14Kg)' } }]
+    [{ specieName: 'Cachorro', petName: 'any pet name', gender: 'M', breedName: 'Afghan Hound', size: 'Mini (Até 6Kg)', dateOfBirth: '2024-06-05T23:40:42.628Z', castrated: false }, { status: 201, body: { specie: { name: 'Cachorro' }, specieAlias: null, petName: 'any pet name', gender: 'M', breed: { name: 'Afghan Hound' }, size: { name: 'Mini (Até 6Kg)' }, dateOfBirth: '2024-06-05T23:40:42.628Z', castrated: false } }],
+    [{ specieName: 'Inseto', petName: 'any pet name', gender: 'M', breedName: 'Sem raça', size: 'Sem porte', dateOfBirth: '2000-11-23T02:00:00.000Z', castrated: true }, { status: 201, body: { specie: { name: 'Outros' }, specieAlias: 'Inseto', petName: 'any pet name', gender: 'M', breed: { name: 'Sem raça' }, size: { name: 'Sem porte' }, dateOfBirth: '2000-11-23T02:00:00.000Z', castrated: false } }],
+    [{ specieName: 'Cachorro', petName: 'any pet name', gender: 'F', breedName: 'Sem raça Cachorro', size: 'Pequeno (6 à 14Kg)', dateOfBirth: '2018-05-10T02:00:00.000Z', castrated: false }, { status: 201, body: { specie: { name: 'Cachorro' }, specieAlias: null, petName: 'any pet name', gender: 'F', breed: { name: 'Sem raça Cachorro' }, size: { name: 'Pequeno (6 à 14Kg)' }, dateOfBirth: '2018-05-10T02:00:00.000Z', castrated: false } }]
   ])("When data is '%s' should return '%s' when the pet is successfully created", async (data, res) => {
-    const { accessToken } = await makeSetup()
+    const { accessToken, fakeUser } = await makeSetup()
     const response = await request(app)
       .post('/api/pet')
       .set('Authorization', accessToken)
-      .send({
-        specieName: data.specieName,
-        petName: data.petName,
-        gender: data.gender,
-        breedName: data.breedName,
-        size: data.size
-      })
+      .send(data)
 
     expect(response.status).toBe(res.status)
-    expect(response.body.specie.name).toBe(res.specie.name)
-    expect(response.body.specieAlias).toBe(res.specieAlias)
-    expect(response.body.petName).toBe(res.petName)
-    expect(response.body.breed.name).toBe(res.breed.name)
-    expect(response.body.size.name).toBe(res.size.name)
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      guardian: fakeUser,
+      specie: {
+        id: expect.any(String),
+        name: res.body.specie.name
+      },
+      specieAlias: res.body.specieAlias,
+      petName: res.body.petName,
+      gender: res.body.gender,
+      breed: {
+        id: expect.any(String),
+        name: res.body.breed.name,
+        specieId: expect.any(String)
+      },
+      breedAlias: '',
+      size: {
+        id: expect.any(String),
+        name: res.body.size.name,
+        specieId: expect.any(String)
+      },
+      castrated: res.body.castrated,
+      dateOfBirth: res.body.dateOfBirth
+    })
   })
 })
 
@@ -125,7 +146,9 @@ describe('GET - /api/pet Route', () => {
         petName: 'any pet name',
         gender: 'M',
         breedName: 'Afghan Hound',
-        size: 'Mini (Até 6Kg)'
+        size: 'Mini (Até 6Kg)',
+        dateOfBirth: '2024-06-05T23:40:42.628Z',
+        castrated: true
       })
 
     const response = await request(app)
@@ -134,7 +157,7 @@ describe('GET - /api/pet Route', () => {
       .send()
 
     expect(response.status).toBe(200)
-    expect(response.body[0]).toStrictEqual({
+    expect(response.body).toStrictEqual([{
       id: expect.any(String),
       guardianId: expect.any(String),
       specie: {
@@ -153,8 +176,9 @@ describe('GET - /api/pet Route', () => {
         id: expect.any(String),
         name: 'Mini (Até 6Kg)'
       },
-      castrated: false
-    })
+      castrated: true,
+      dateOfBirth: '2024-06-05T23:40:42.628Z'
+    }])
   })
 
   it('ensure return an empty array if there are not pets registered', async () => {

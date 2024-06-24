@@ -19,7 +19,8 @@ export const petRegistryPath = {
             gender: 'M',
             breedName: 'Doméstico de Pelo Curto',
             size: 'Pequeno (Até 10Kg)',
-            castrated: true
+            castrated: true,
+            dateOfBirth: '2021-01-01T00:00:00Z'
           }
         }
       }

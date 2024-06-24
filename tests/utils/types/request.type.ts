@@ -50,6 +50,7 @@ interface PetRegistryRequest {
     gender: string
     breedName: string
     size: string
+    dateOfBirth: Date
   }
 }
 
