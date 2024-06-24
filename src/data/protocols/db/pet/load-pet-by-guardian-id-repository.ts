@@ -1,5 +1,5 @@
 export interface LoadPetByGuardianIdRepository {
-  load: (guardianId: LoadPetByGuardianIdRepository.Params) => Promise<LoadPetByGuardianIdRepository.Result>
+  loadByGuardianId: (guardianId: LoadPetByGuardianIdRepository.Params) => Promise<LoadPetByGuardianIdRepository.Result>
 }
 
 export namespace LoadPetByGuardianIdRepository {
