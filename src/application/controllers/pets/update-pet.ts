@@ -13,13 +13,13 @@ export class UpdatePetController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate({...httpRequest.body, ...httpRequest.params })
+      const error = this.validation.validate({ ...httpRequest.body, ...httpRequest.params })
       if (error) {
         return badRequest(error)
       }
       const guardianId = httpRequest.userId as string
       const petId = httpRequest.params.petId as string
-      const updateData = { ...httpRequest.body, guardianId, petId}
+      const updateData = { ...httpRequest.body, guardianId, petId }
       if (Object.hasOwn(updateData, 'gender')) {
         updateData.gender = updateData.gender?.toUpperCase()
       }
