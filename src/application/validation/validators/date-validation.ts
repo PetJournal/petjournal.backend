@@ -12,7 +12,7 @@ export class DateValidation implements Validation {
   }
 
   validate (input: any): void | Error {
-    if (typeof input[this.fieldName] !== 'string') {
+    if (typeof input[this.fieldName] !== 'string' && input[this.fieldName] !== null) {
       return new InvalidParamError(this.fieldName)
     }
 
