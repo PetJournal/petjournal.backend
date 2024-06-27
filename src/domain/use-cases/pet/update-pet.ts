@@ -1,4 +1,4 @@
-import { type UpdatePetRepository, type LoadGuardianByIdRepository } from '@/data/protocols'
+import { type UpdatePetRepository, type LoadGuardianByIdRepository, type LoadPetByIdRepository } from '@/data/protocols'
 import { type PetGender } from '@/domain/models/pet'
 import { type AppointPet } from './appoint-pet'
 
@@ -16,6 +16,7 @@ export namespace UpdatePet {
     breedName?: string
     size?: string
     castrated?: boolean
+    dateOfBirth?: Date
   }
 
   export interface Result {
@@ -26,7 +27,7 @@ export namespace UpdatePet {
 
   export interface Dependencies {
     guardianRepository: LoadGuardianByIdRepository
-    petRepository: UpdatePetRepository
+    petRepository: UpdatePetRepository & LoadPetByIdRepository
     appointPet: AppointPet
   }
 }

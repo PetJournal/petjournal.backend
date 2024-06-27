@@ -10,6 +10,7 @@ export interface UpdatePetRepository {
 
 export namespace UpdatePetRepository {
   export interface Params {
+    guardianId: string
     petId: string
     specieId?: string
     breedId?: string
@@ -19,6 +20,7 @@ export namespace UpdatePetRepository {
     petName?: string
     gender?: PetGender
     castrated?: boolean
+    dateOfBirth?: Date
   }
 
   type GuardianResultDb = Pick<Guardian, 'firstName' | 'lastName' | 'email' | 'phone'> & {
@@ -48,5 +50,6 @@ export namespace UpdatePetRepository {
     breedAlias: string
     size: SizeResultDb
     castrated: boolean
+    dateOfBirth: Date
   } | undefined
 }

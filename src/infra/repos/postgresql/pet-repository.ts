@@ -70,7 +70,8 @@ export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepos
         breed: true,
         breedAlias: true,
         size: true,
-        castrated: true
+        castrated: true,
+        dateOfBirth: true
       }
     })
     return pet

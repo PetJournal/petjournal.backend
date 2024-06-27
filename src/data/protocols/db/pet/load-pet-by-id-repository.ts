@@ -25,5 +25,6 @@ export namespace LoadPetByIdRepository {
       name: string
     }
     castrated: boolean
+    dateOfBirth: Date
   } | null
 }
