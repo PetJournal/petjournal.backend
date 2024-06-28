@@ -46,7 +46,7 @@ export class DbUpdatePet implements UpdatePet {
       specieName: petData.specieName ? petData.specieName : pet.specie.name,
       breedName: petData.breedName ? petData.breedName : pet.breed.name,
       size: petData.size ? petData.size : pet.size.name,
-      castrated: petData.castrated ? petData.castrated : pet.castrated
+      castrated: typeof petData.castrated === 'boolean' ? petData.castrated : pet.castrated
     })
     if (appointResult.error) {
       return {
