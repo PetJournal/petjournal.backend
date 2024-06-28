@@ -1,17 +1,17 @@
 export const updatePetPath = {
-  patch: {
+  put: {
     tags: ['pet'],
     summary: 'update an existent pet',
-    description: '',
+    description: 'if you don\'t want change some field, just put null on it, then your field will use the save data',
     security: [{
       bearerAuth: []
     }],
     consumes: [
-      "application/json"
+      'application/json'
     ],
     produces: [
-      "application/json",
-      "application/xml"
+      'application/json',
+      'application/xml'
     ],
     parameters: [{
       name: 'petId',
@@ -28,9 +28,9 @@ export const updatePetPath = {
         'application/json': {
           schema: {
             $ref: '#/schemas/updatePetParams'
-          },
-        },
-      },
+          }
+        }
+      }
     },
     responses: {
       200: {
