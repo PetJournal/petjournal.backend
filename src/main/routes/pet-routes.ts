@@ -6,5 +6,5 @@ import { makeLoadPetsController, makePetRegistryController, makeUpdatePetControl
 export default (router: Router): void => {
   router.get('/pet', auth, adaptRoute(makeLoadPetsController()))
   router.post('/pet', auth, adaptRoute(makePetRegistryController()))
-  router.put('/updatePet', auth, adaptRoute(makeUpdatePetController()))
+  router.put('/pet/:petId', auth, adaptRoute(makeUpdatePetController()))
 }
