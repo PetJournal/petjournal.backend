@@ -24,6 +24,10 @@ export const updatePetParamsSchema = {
     castrated: {
       type: 'boolean',
       example: true
+    },
+    dateOfBirth: {
+      type: 'Date',
+      example: '2024-04-04T00:00:00Z'
     }
   }
 }
