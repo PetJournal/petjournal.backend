@@ -3,6 +3,7 @@ import { type UpdatePet, type AppointPet } from '@/domain/use-cases'
 import { type LoadPetByGuardianIdRepository, type LoadPetByIdRepository, type LoadGuardianByIdRepository } from '@/data/protocols'
 import { makeFakeAppointPetUseCase, makeFakeGuardianRepository, makeFakePetRepository } from '@/tests/utils'
 import { PetGender } from '@/domain/models'
+import { NotAcceptableError } from '@/application/errors'
 
 interface SutTypes {
   sut: DbUpdatePet
@@ -49,6 +50,16 @@ describe('DbUpdatePet Use Case', () => {
       const loadByIdSpy = jest.spyOn(guardianRepositoryStub, 'loadById')
       await sut.update(params)
       expect(loadByIdSpy).toHaveBeenCalledWith(params.guardianId)
+    })
+
+    it('Should return Not Acceptable error if incorrect guardianId is provided', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      jest.spyOn(guardianRepositoryStub, 'loadById').mockResolvedValueOnce(null)
+      const result = await sut.update(params)
+      expect(result).toEqual({
+        isSuccess: false,
+        error: new NotAcceptableError('userId')
+      })
     })
   })
 })
