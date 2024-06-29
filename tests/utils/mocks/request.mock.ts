@@ -90,6 +90,7 @@ const makeFakePetRegistryRequest = (): PetRegistryRequest => {
     gender: PetGender.MALE,
     breedName: 'valid_breed_name',
     size: 'any_size',
+    castrated: false,
     dateOfBirth: new Date(2000, 10, 23)
   }
 
@@ -102,7 +103,9 @@ const makeFakeUpdatePetRequest = (): UpdatePetRequest => {
     petName: 'any_name',
     gender: PetGender.MALE,
     breedName: 'valid_breed_name',
-    size: 'any_size'
+    size: 'any_size',
+    castrated: false,
+    dateOfBirth: new Date(2000, 10, 23)
   }
   const userId = 'valid_guardian_id'
   const params = {

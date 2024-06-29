@@ -60,7 +60,9 @@ describe('UpdatePet Controller', () => {
         petName: httpRequest.body.petName,
         gender: httpRequest.body.gender,
         breedName: httpRequest.body.breedName,
-        size: httpRequest.body.size
+        size: httpRequest.body.size,
+        castrated: httpRequest.body.castrated,
+        dateOfBirth: httpRequest.body.dateOfBirth
       })
     })
   })
@@ -74,20 +76,20 @@ describe('UpdatePet Controller', () => {
 
       expect(httpResponse).toEqual(badRequest(new Error()))
     })
-    
+
     it('Should call Validation with correct values', async () => {
       const { sut, validationStub } = makeSut()
       const validateSpy = jest.spyOn(validationStub, 'validate')
 
       await sut.handle(httpRequest)
 
-      expect(validateSpy).toHaveBeenCalledWith({...httpRequest.body, ...httpRequest.params})
+      expect(validateSpy).toHaveBeenCalledWith({ ...httpRequest.body, ...httpRequest.params })
     })
   })
 
   it('should return 200 (success) if empty data is provided', async () => {
     const { sut } = makeSut()
-    const {body, ...httpRequestWithoutBody} = {...httpRequest}
+    const { body, ...httpRequestWithoutBody } = { ...httpRequest }
 
     const httpResponse = await sut.handle(httpRequestWithoutBody)
 
@@ -97,15 +99,15 @@ describe('UpdatePet Controller', () => {
   it('should return 200 (success) if valid data is provided', async () => {
     const { sut } = makeSut()
 
-    const entries = Object.entries(httpRequest.body);
-    const f = async (prefix: any, entries: any) => {
-        for (let i = 0; i < entries.length; i++) {
-            Object.assign(httpRequest, { body: { ...Object.fromEntries([...prefix, entries[i]]) } })
-            const httpResponse = await sut.handle(httpRequest)
-            expect(httpResponse).toEqual(success(mockFakePetUpdated()))
-            f([...prefix, entries[i]], entries.slice(i + 1));
-        }
+    const entries = Object.entries(httpRequest.body)
+    const f = async (prefix: any, entries: any): Promise<void> => {
+      for (let i = 0; i < entries.length; i++) {
+        Object.assign(httpRequest, { body: { ...Object.fromEntries([...prefix, entries[i]]) } })
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(success(mockFakePetUpdated()))
+        await f([...prefix, entries[i]], entries.slice(i + 1))
+      }
     }
-    await f([], entries);
+    await f([], entries)
   })
 })

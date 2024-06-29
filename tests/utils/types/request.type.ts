@@ -50,6 +50,7 @@ interface PetRegistryRequest {
     gender: string
     breedName: string
     size: string
+    castrated: boolean
     dateOfBirth: Date
   }
 }
@@ -62,6 +63,8 @@ interface UpdatePetRequest {
     gender: string
     breedName: string
     size: string
+    castrated: boolean
+    dateOfBirth: Date
   }
   params: {
     petId: string
