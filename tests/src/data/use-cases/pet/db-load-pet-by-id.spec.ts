@@ -1,6 +1,6 @@
 import { type LoadPetByIdRepository } from '@/data/protocols'
 import { DbLoadPetById } from '@/data/use-cases/pet/db-load-pet-by-id'
-import { LoadPetById, type LoadPets } from '@/domain/use-cases'
+import { type LoadPetById } from '@/domain/use-cases'
 import { makeFakeLoadPetByIdRepository } from '@/tests/utils'
 
 interface SutTypes {
@@ -68,7 +68,8 @@ describe('DbLoadPetsByGuardianId', () => {
           id: 'any_id',
           name: 'any_name'
         },
-        castrated: false
+        castrated: false,
+        dateOfBirth: new Date(2000, 10, 23)
       })
     })
   })
