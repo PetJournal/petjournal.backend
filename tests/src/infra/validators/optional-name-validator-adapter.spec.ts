@@ -29,17 +29,17 @@ describe('NameValidator Adapter', () => {
     expect(isValid).toBe(true)
   })
 
-  it('Should return true if provided name is undefined', () => {
+  it('Should return true if provided name is null', () => {
     const sut = makeSut()
 
-    const isValid = sut.isValid(undefined)
+    const isValid = sut.isValid(null)
 
     expect(isValid).toBe(true)
   })
 
   it('Should call validator with correct name', () => {
     const sut = makeSut()
-    const regexName = /^[a-zA-Z]{3,}$/
+    const regexName = /^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ ]{3,}$/
     const matchesNameSpy = jest.spyOn(validator, 'matches')
 
     sut.isValid('any_name')
