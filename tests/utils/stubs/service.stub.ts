@@ -5,7 +5,8 @@ import {
   mockFakeCatBreedsLoaded,
   mockFakeDogBreedsLoaded,
   mockFakePetByGuardianIdLoaded,
-  mockFakePetByIdLoaded
+  mockFakePetByIdLoaded,
+  mockFakePetUpdated
 } from '@/tests/utils'
 import {
   type EmailService,
@@ -27,7 +28,8 @@ import {
   type LoadCatBreedsRepository,
   type LoadDogBreedsRepository,
   type LoadPetByGuardianIdRepository,
-  type LoadPetByIdRepository
+  type LoadPetByIdRepository,
+  type UpdatePetRepository
 } from '@/data/protocols'
 import { type LoadCatSizesRepository } from '@/data/protocols/db/size/load-cat-sizes-repository'
 import { type LoadDogSizesRepository } from '@/data/protocols/db/size/load-dog-sizes-repository'
@@ -82,10 +84,22 @@ UpdateVerificationTokenRepository => {
   return new GuardianRepositoryStub()
 }
 
-const makeFakePetRepository = (): AddPetRepository => {
-  class PetRepositoryStub implements AddPetRepository, LoadPetByGuardianIdRepository, LoadPetByIdRepository {
+const makeFakePetRepository = ():
+AddPetRepository &
+LoadPetByGuardianIdRepository &
+LoadPetByIdRepository &
+UpdatePetRepository => {
+  class PetRepositoryStub implements
+  AddPetRepository,
+  LoadPetByGuardianIdRepository,
+  LoadPetByIdRepository,
+  UpdatePetRepository {
     async add (petData: AddPetRepository.Params): Promise<AddPetRepository.Result> {
       return mockFakePetAdded()
+    }
+
+    async update (params: UpdatePetRepository.Params): Promise<UpdatePetRepository.Result> {
+      return mockFakePetUpdated()
     }
 
     async loadByGuardianId (guardianId: string): Promise<LoadPetByGuardianIdRepository.Result> {
