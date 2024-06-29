@@ -126,7 +126,7 @@ describe('PetRepository', () => {
       expect(specie).toBeFalsy()
     })
 
-    it.only('Should return a pet if valid data is provided', async () => {
+    it('Should return a pet if valid data is provided', async () => {
       const sut = makeSut()
       const guardian = await db.guardian.create({
         data: {
