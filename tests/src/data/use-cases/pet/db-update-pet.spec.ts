@@ -69,4 +69,13 @@ describe('DbUpdatePet Use Case', () => {
       await expect(promise).rejects.toThrow()
     })
   })
+
+  describe('PetRepository', () => {
+    it('Should call loadById method with correct values', async () => {
+      const { sut, petRepositoryStub } = makeSut()
+      const loadByIdSpy = jest.spyOn(petRepositoryStub, 'loadById')
+      await sut.update(params)
+      expect(loadByIdSpy).toHaveBeenCalledWith(params.petId)
+    })
+  })
 })
