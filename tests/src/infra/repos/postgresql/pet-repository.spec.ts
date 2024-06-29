@@ -117,7 +117,8 @@ describe('PetRepository', () => {
         breedId: 'invalid_breed_id',
         breedAlias: 'invalid_breed_alias',
         sizeId: 'invalid_size_id',
-        castrated: false
+        castrated: false,
+        dateOfBirth: new Date(2000, 10, 23)
       }
 
       const specie = await sut.add(data)
@@ -175,7 +176,8 @@ describe('PetRepository', () => {
         breedId: breed.id,
         breedAlias: 'any_breed_alias',
         sizeId: size.id,
-        castrated: false
+        castrated: false,
+        dateOfBirth: new Date(2000, 10, 23)
       }
 
       const createdPet = await db.pet.create({ data })
@@ -186,11 +188,11 @@ describe('PetRepository', () => {
         gender: 'F',
         breedAlias: 'Caramelo',
         breedId: breed2.id,
-        sizeId: size2.id,
+        sizeId: size2.id
       }
       for (const combination of getCombinations(combinations)) {
         const updatedPet = await sut.update({
-          petId: createdPet.id as string,
+          petId: createdPet.id,
           ...pet,
           ...combination
         })
@@ -223,7 +225,7 @@ describe('PetRepository', () => {
           },
           ...combination
         })
-    }
+      }
     })
   })
 
@@ -271,7 +273,7 @@ describe('PetRepository', () => {
       }
 
       await sut.add(data)
-      const result = await sut.load(data.guardianId)
+      const result = await sut.loadByGuardianId(data.guardianId)
       expect(result).toEqual([{
         id: expect.any(String),
         breed: {
@@ -308,7 +310,7 @@ describe('PetRepository', () => {
           verificationToken: 'any_token'
         }
       })
-      const result = await sut.load(guardian.id)
+      const result = await sut.loadByGuardianId(guardian.id)
       expect(result).toEqual([])
     })
   })
