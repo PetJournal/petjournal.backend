@@ -1,5 +1,6 @@
 import { InvalidParamError } from '@/application/errors'
 import { PetGenderValidation } from '@/application/validation'
+import { PetGenderValidatorAdapter } from '@/infra/validators'
 
 interface SutTypes {
   sut: PetGenderValidation
@@ -7,7 +8,8 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const fieldName = 'gender'
-  const sut = new PetGenderValidation(fieldName)
+  const petGenderValidatorAdapter = new PetGenderValidatorAdapter()
+  const sut = new PetGenderValidation(fieldName, petGenderValidatorAdapter)
 
   return { sut }
 }
