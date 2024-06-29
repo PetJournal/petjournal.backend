@@ -77,5 +77,15 @@ describe('DbUpdatePet Use Case', () => {
       await sut.update(params)
       expect(loadByIdSpy).toHaveBeenCalledWith(params.petId)
     })
+
+    it('Should return Not Acceptable error if incorrect petId is provided', async () => {
+      const { sut, petRepositoryStub } = makeSut()
+      jest.spyOn(petRepositoryStub, 'loadById').mockResolvedValueOnce(null)
+      const result = await sut.update(params)
+      expect(result).toEqual({
+        isSuccess: false,
+        error: new NotAcceptableError('petId')
+      })
+    })
   })
 })
