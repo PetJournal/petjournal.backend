@@ -61,5 +61,12 @@ describe('DbUpdatePet Use Case', () => {
         error: new NotAcceptableError('userId')
       })
     })
+
+    it('Should throw if loadById method throws', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      jest.spyOn(guardianRepositoryStub, 'loadById').mockRejectedValue(new Error())
+      const promise = sut.update(params)
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
