@@ -9,7 +9,7 @@ import {
   type LoadCatBreedsRepository,
   type LoadDogBreedsRepository,
   type LoadPetByGuardianIdRepository,
-  LoadPetByIdRepository
+  type LoadPetByIdRepository
 } from '@/data/protocols'
 import { type AppointPet } from '@/domain/use-cases'
 import { type Guardian } from '@/tests/utils/types'
@@ -98,7 +98,8 @@ const mockFakePetByIdLoaded = (): Exclude<LoadPetByIdRepository.Result, null> =>
       id: 'any_id',
       name: 'any_name'
     },
-    castrated: false
+    castrated: false,
+    dateOfBirth: new Date(2000, 10, 23)
   }
 }
 
@@ -112,7 +113,8 @@ const mockFakePetUpdated = (): UpdatePetRepository.Result => {
     breed: mockFakeBreedAdded(),
     breedAlias: 'any_breed_alias',
     size: mockFakeSizeAdded(),
-    castrated: false
+    castrated: false,
+    dateOfBirth: new Date(2000, 10, 23)
   }
 }
 
