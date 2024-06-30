@@ -1,7 +1,7 @@
 import { DbUpdatePet } from '@/data/use-cases'
 import { type UpdatePet, type AppointPet } from '@/domain/use-cases'
 import { type LoadPetByGuardianIdRepository, type LoadPetByIdRepository, type LoadGuardianByIdRepository } from '@/data/protocols'
-import { makeFakeAppointPetUseCase, makeFakeGuardianRepository, makeFakePetRepository, mockFakePetByIdLoaded } from '@/tests/utils'
+import { makeFakeAppointPetUseCase, makeFakeGuardianRepository, makeFakePetRepository, mockFakePetByIdLoaded, mockFakePetUpdated } from '@/tests/utils'
 import { PetGender } from '@/domain/models'
 import { NotAcceptableError } from '@/application/errors'
 
@@ -128,6 +128,15 @@ describe('DbUpdatePet Use Case', () => {
       jest.spyOn(appointPetStub, 'appoint').mockRejectedValue(new Error())
       const promise = sut.update(params)
       await expect(promise).rejects.toThrow()
+    })
+  })
+
+  it('Should return pet data on update success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.update(params)
+    expect(result).toEqual({
+      isSuccess: true,
+      data: mockFakePetUpdated()
     })
   })
 })
