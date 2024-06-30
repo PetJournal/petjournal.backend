@@ -1,7 +1,7 @@
 import { DbUpdatePet } from '@/data/use-cases'
 import { type UpdatePet, type AppointPet } from '@/domain/use-cases'
 import { type LoadPetByGuardianIdRepository, type LoadPetByIdRepository, type LoadGuardianByIdRepository } from '@/data/protocols'
-import { makeFakeAppointPetUseCase, makeFakeGuardianRepository, makeFakePetRepository } from '@/tests/utils'
+import { makeFakeAppointPetUseCase, makeFakeGuardianRepository, makeFakePetRepository, mockFakePetByIdLoaded } from '@/tests/utils'
 import { PetGender } from '@/domain/models'
 import { NotAcceptableError } from '@/application/errors'
 
@@ -93,6 +93,21 @@ describe('DbUpdatePet Use Case', () => {
       jest.spyOn(petRepositoryStub, 'loadById').mockRejectedValue(new Error())
       const promise = sut.update(params)
       await expect(promise).rejects.toThrow()
+    })
+  })
+
+  describe('AppointPet', () => {
+    it('Should call appoint with correct values', async () => {
+      const { sut, appointPetStub } = makeSut()
+      const fakePet = mockFakePetByIdLoaded()
+      const appointSpy = jest.spyOn(appointPetStub, 'appoint')
+      await sut.update(params)
+      expect(appointSpy).toHaveBeenCalledWith({
+        specieName: params.specieName ? params.specieName : fakePet.specie.name,
+        breedName: params.breedName ? params.breedName : fakePet.breed.name,
+        size: params.size ? params.size : fakePet.size.name,
+        castrated: typeof params.castrated === 'boolean' ? params.castrated : fakePet.castrated
+      })
     })
   })
 })
