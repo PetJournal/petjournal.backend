@@ -122,5 +122,12 @@ describe('DbUpdatePet Use Case', () => {
         error: new Error()
       })
     })
+
+    it('Should throw if appoint method throws', async () => {
+      const { sut, appointPetStub } = makeSut()
+      jest.spyOn(appointPetStub, 'appoint').mockRejectedValue(new Error())
+      const promise = sut.update(params)
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
