@@ -10,11 +10,3 @@ export function getCombinations (obj: any): any {
   f([], entries)
   return result
 }
-
-const object = {
-  a: 1,
-  b: 2,
-  c: [3, 4]
-}
-
-console.log(getCombinations(object))
