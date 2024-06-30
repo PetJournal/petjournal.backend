@@ -109,5 +109,18 @@ describe('DbUpdatePet Use Case', () => {
         castrated: typeof params.castrated === 'boolean' ? params.castrated : fakePet.castrated
       })
     })
+
+    it('Should return error if incorrect values are provided', async () => {
+      const { sut, appointPetStub } = makeSut()
+      jest.spyOn(appointPetStub, 'appoint').mockResolvedValueOnce({
+        isSuccess: false,
+        error: new Error()
+      })
+      const result = await sut.update(params)
+      expect(result).toEqual({
+        isSuccess: false,
+        error: new Error()
+      })
+    })
   })
 })

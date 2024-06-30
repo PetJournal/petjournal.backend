@@ -1,4 +1,4 @@
-import { LoadPetByIdRepository } from '@/data/protocols'
+import { type LoadPetByIdRepository } from '@/data/protocols'
 import { type LoadPetById } from '@/domain/use-cases'
 
 export class DbLoadPetById implements LoadPetById {
