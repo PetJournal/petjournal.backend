@@ -11,7 +11,8 @@ import {
   loadCatSizesPath,
   loadDogSizesPath,
   petRegistryPath,
-  updatePetPath
+  updatePetPath,
+  deletePetPath
 } from './paths/'
 
 export default {
@@ -21,7 +22,7 @@ export default {
   '/guardian/change-password': changePasswordPath,
   '/waiting-code': waitingCodePath,
   '/pet': { ...petRegistryPath, ...loadPetsPath },
-  '/pet/{petId}': updatePetPath,
+  '/pet/{petId}': { ...updatePetPath, ...deletePetPath },
   '/guardian/name': loadGuardianNamePath,
   '/breeds/cat': loadCatBreedsPath,
   '/breeds/dog': loadDogBreedsPath,
