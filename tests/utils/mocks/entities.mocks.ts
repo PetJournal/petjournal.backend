@@ -9,7 +9,8 @@ import {
   type LoadCatBreedsRepository,
   type LoadDogBreedsRepository,
   type LoadPetByGuardianIdRepository,
-  type LoadPetByIdRepository
+  type LoadPetByIdRepository,
+  type DeletePetByIdRepository
 } from '@/data/protocols'
 import { type AppointPet } from '@/domain/use-cases'
 import { type Guardian } from '@/tests/utils/types'
@@ -78,6 +79,7 @@ const mockFakePetByGuardianIdLoaded = (): Exclude<LoadPetByGuardianIdRepository.
     castrated: false
   }]
 }
+
 const mockFakePetByIdLoaded = (): Exclude<LoadPetByIdRepository.Result, null> => {
   return {
     id: 'any_id',
@@ -101,6 +103,10 @@ const mockFakePetByIdLoaded = (): Exclude<LoadPetByIdRepository.Result, null> =>
     castrated: false,
     dateOfBirth: new Date(2000, 10, 23)
   }
+}
+
+const mockFakePetByIdDeleted = (): DeletePetByIdRepository.Result => {
+  return true
 }
 
 const mockFakePetUpdated = (): UpdatePetRepository.Result => {
@@ -189,6 +195,7 @@ export {
   mockFakePetByGuardianIdLoaded,
   mockFakePetByIdLoaded,
   mockFakePetUpdated,
+  mockFakePetByIdDeleted,
   mockFakeSpecieAdded,
   mockFakeCatBreedsLoaded,
   mockFakeDogBreedsLoaded,
