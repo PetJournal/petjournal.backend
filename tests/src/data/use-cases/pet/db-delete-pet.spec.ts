@@ -64,5 +64,15 @@ describe('DbDeletePet  Use Case', () => {
       await sut.delete(params)
       expect(loadByIdSpy).toHaveBeenLastCalledWith(params.petId)
     })
+
+    it('Should return Not Acceptable error if incorrect petId is provided', async () => {
+      const { sut, petRepositoryStub } = makeSut()
+      jest.spyOn(petRepositoryStub, 'loadById').mockResolvedValueOnce(null)
+      const result = await sut.delete(params)
+      expect(result).toEqual({
+        isSuccess: false,
+        error: new NotAcceptableError('petId')
+      })
+    })
   })
 })
