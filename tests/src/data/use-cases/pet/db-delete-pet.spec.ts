@@ -58,28 +58,38 @@ describe('DbDeletePet  Use Case', () => {
   })
 
   describe('PetRepository', () => {
-    it('Should call loadById with correct values', async () => {
-      const { sut, petRepositoryStub } = makeSut()
-      const loadByIdSpy = jest.spyOn(petRepositoryStub, 'loadById')
-      await sut.delete(params)
-      expect(loadByIdSpy).toHaveBeenLastCalledWith(params.petId)
-    })
+    describe('loadById method', () => {
+      it('Should call loadById with correct values', async () => {
+        const { sut, petRepositoryStub } = makeSut()
+        const loadByIdSpy = jest.spyOn(petRepositoryStub, 'loadById')
+        await sut.delete(params)
+        expect(loadByIdSpy).toHaveBeenLastCalledWith(params.petId)
+      })
 
-    it('Should return Not Acceptable error if incorrect petId is provided', async () => {
-      const { sut, petRepositoryStub } = makeSut()
-      jest.spyOn(petRepositoryStub, 'loadById').mockResolvedValueOnce(null)
-      const result = await sut.delete(params)
-      expect(result).toEqual({
-        isSuccess: false,
-        error: new NotAcceptableError('petId')
+      it('Should return Not Acceptable error if incorrect petId is provided', async () => {
+        const { sut, petRepositoryStub } = makeSut()
+        jest.spyOn(petRepositoryStub, 'loadById').mockResolvedValueOnce(null)
+        const result = await sut.delete(params)
+        expect(result).toEqual({
+          isSuccess: false,
+          error: new NotAcceptableError('petId')
+        })
+      })
+
+      it('Should throw if loadById throws', async () => {
+        const { sut, petRepositoryStub } = makeSut()
+        jest.spyOn(petRepositoryStub, 'loadById').mockRejectedValueOnce(new Error())
+        const promise = sut.delete(params)
+        await expect(promise).rejects.toThrow()
       })
     })
-
-    it('Should throw if loadById throws', async () => {
-      const { sut, petRepositoryStub } = makeSut()
-      jest.spyOn(petRepositoryStub, 'loadById').mockRejectedValueOnce(new Error())
-      const promise = sut.delete(params)
-      await expect(promise).rejects.toThrow()
+    describe('deletebyId method', () => {
+      it('Should call deleteById with correct values', async () => {
+        const { sut, petRepositoryStub } = makeSut()
+        const deleteByIdSpy = jest.spyOn(petRepositoryStub, 'deleteById')
+        await sut.delete(params)
+        expect(deleteByIdSpy).toHaveBeenLastCalledWith(params.petId)
+      })
     })
   })
 })
