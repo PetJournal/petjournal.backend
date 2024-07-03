@@ -90,6 +90,13 @@ describe('DbDeletePet  Use Case', () => {
         await sut.delete(params)
         expect(deleteByIdSpy).toHaveBeenLastCalledWith(params.petId)
       })
+
+      it('Should throw if deleteById throws', async () => {
+        const { sut, petRepositoryStub } = makeSut()
+        jest.spyOn(petRepositoryStub, 'deleteById').mockRejectedValueOnce(new Error())
+        const promise = sut.delete(params)
+        await expect(promise).rejects.toThrow()
+      })
     })
   })
 })
