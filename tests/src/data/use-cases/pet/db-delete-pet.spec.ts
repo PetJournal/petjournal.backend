@@ -48,5 +48,12 @@ describe('DbDeletePet  Use Case', () => {
         error: new NotAcceptableError('userId')
       })
     })
+
+    it('Should throw if loadById throws', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      jest.spyOn(guardianRepositoryStub, 'loadById').mockRejectedValueOnce(new Error())
+      const promise = sut.delete(params)
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
