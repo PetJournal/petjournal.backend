@@ -1,4 +1,4 @@
-import { NotAcceptableError } from '@/application/errors'
+import { NotAcceptableError, ServerError } from '@/application/errors'
 import { type DeletePetByIdRepository, type LoadGuardianByIdRepository, type LoadPetByIdRepository } from '@/data/protocols'
 import { DbDeletePet } from '@/data/use-cases'
 import { type DeletePet } from '@/domain/use-cases'
@@ -89,6 +89,16 @@ describe('DbDeletePet  Use Case', () => {
         const deleteByIdSpy = jest.spyOn(petRepositoryStub, 'deleteById')
         await sut.delete(params)
         expect(deleteByIdSpy).toHaveBeenLastCalledWith(params.petId)
+      })
+
+      it('Should return server error if incorrect petId is provided', async () => {
+        const { sut, petRepositoryStub } = makeSut()
+        jest.spyOn(petRepositoryStub, 'deleteById').mockResolvedValueOnce(undefined)
+        const result = await sut.delete(params)
+        expect(result).toEqual({
+          isSuccess: false,
+          error: new ServerError('delete error')
+        })
       })
 
       it('Should throw if deleteById throws', async () => {
