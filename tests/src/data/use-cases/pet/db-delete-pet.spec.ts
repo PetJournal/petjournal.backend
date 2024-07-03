@@ -56,4 +56,13 @@ describe('DbDeletePet  Use Case', () => {
       await expect(promise).rejects.toThrow()
     })
   })
+
+  describe('PetRepository', () => {
+    it('Should call loadById with correct values', async () => {
+      const { sut, petRepositoryStub } = makeSut()
+      const loadByIdSpy = jest.spyOn(petRepositoryStub, 'loadById')
+      await sut.delete(params)
+      expect(loadByIdSpy).toHaveBeenLastCalledWith(params.petId)
+    })
+  })
 })
