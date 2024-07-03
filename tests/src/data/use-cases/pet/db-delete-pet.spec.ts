@@ -1,3 +1,4 @@
+import { NotAcceptableError } from '@/application/errors'
 import { type DeletePetByIdRepository, type LoadGuardianByIdRepository, type LoadPetByIdRepository } from '@/data/protocols'
 import { DbDeletePet } from '@/data/use-cases'
 import { type DeletePet } from '@/domain/use-cases'
@@ -36,6 +37,16 @@ describe('DbDeletePet  Use Case', () => {
       const loadByIdSpy = jest.spyOn(guardianRepositoryStub, 'loadById')
       await sut.delete(params)
       expect(loadByIdSpy).toHaveBeenCalledWith(params.guardianId)
+    })
+
+    it('Should return Not Acceptable error if incorrect guardianId is provided', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      jest.spyOn(guardianRepositoryStub, 'loadById').mockResolvedValueOnce(null)
+      const result = await sut.delete(params)
+      expect(result).toEqual({
+        isSuccess: false,
+        error: new NotAcceptableError('userId')
+      })
     })
   })
 })
