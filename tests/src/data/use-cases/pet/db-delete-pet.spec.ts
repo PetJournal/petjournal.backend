@@ -108,5 +108,11 @@ describe('DbDeletePet  Use Case', () => {
         await expect(promise).rejects.toThrow()
       })
     })
+
+    it('Should return true if delete pet succeed', async () => {
+      const { sut } = makeSut()
+      const result = await sut.delete(params)
+      expect(result).toEqual({ isSuccess: true })
+    })
   })
 })
