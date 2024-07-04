@@ -28,8 +28,8 @@ git clone https://github.com/PetJournal/petjournal.api.git
 ```
 
 1. Crie uma cópia do arquivo `.env.example` com o nome `.env`. Neste arquivo, substitua os valores das variáveis pela porta de sua preferência para o `localhost`, além do nome de usuário e senha do seu banco de dados PostgreSQL.
-> A aplicação só funcionará com esses dados corretamente inseridos no arquivo `.env`.
 
+   > A aplicação só funcionará com esses dados corretamente inseridos no arquivo `.env`.
 
 2. Garanta que o [**Node.js**](https://nodejs.org/en/download/) está instalado em sua máquina e então habilite o gerenciador de pacotes `yarn`.
 
@@ -37,26 +37,50 @@ git clone https://github.com/PetJournal/petjournal.api.git
 
 4. Rode o comando `yarn` para instalar as dependências do projeto.
 
-5. Inicie o [**Docker**](https://www.docker.com/) em sua máquina.
+5. Rode as migrações no banco de dados.
 
-6. Para iniciar o banco de dados PostgreSQL, rode o comando.
-```bash
-yarn docker:up
-```
-
-7. Faça as migrações no banco de dados.
 ```bash
 yarn migrate
 ```
 
-8. Rode o comando `yarn build` para transpilar o código typescript para javascript.
+6. Rode o comando `yarn build` para transpilar o código typescript para javascript.
 
-9. Rode a aplicação com o comando `yarn start`. Você deve receber a seguinte mensagem de confirmação:
+7. Rode a aplicação com o comando `yarn start`. Você deve receber a seguinte mensagem de confirmação:
+
 ```bash
 Server running at http://localhost:<port>
 ```
 
-10.  Para visualizar a documentação com as rotas disponíveis, acesse `localhost:<port>/api/docs`. Caso prefira um tema escuro, você pode acessar `localhost:<porta>/api/docs/dark`.
+8.  Para visualizar a documentação com as rotas disponíveis, acesse `localhost:<port>/api/docs`. Caso prefira um tema escuro, você pode acessar `localhost:<porta>/api/docs/dark`.
+
+## ⚙️ Como usar (Docker)
+
+0. Faça o download deste repositório através do botão verde **Code** no topo da página e, em seguida, clicando em **Download ZIP**. Ou, se preferir, através do terminal (Git Bash, Powershell, etc.), use o comando:
+
+```bash
+git clone https://github.com/PetJournal/petjournal.api.git
+```
+
+1. Crie o arquivo `.env` na raiz do projeto e configure as variaveis de ambiente necessárias para iniciar os containers docker.
+
+```bash
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=
+MAIL_SERVICE=
+MAIL_USER=
+MAIL_PASS=
+```
+
+2. Inicie o [**Docker**](https://www.docker.com/) em sua máquina.
+
+3. Para iniciar os containers do banco de dados e da api rode o comando.
+
+```bash
+yarn docker:up
+```
+
+4. A Aplicação estará disponivel na porta `3334` e você pode acessar a documentação em `http://localhost:3334/api/docs`. Caso prefira um tema escuro, você pode acessar `http://localhost:3334/api/docs/dark`.
 
 ## Variáveis de ambiente
 
@@ -65,6 +89,7 @@ Server running at http://localhost:<port>
 `NODE_ENV`: Essa variável define o ambiente que a aplicação está sendo executada. Exemplo: `NODE_ENV=development`.
 
 ---
+
 Variáveis relacionadas as configurações do banco de dados. Como exemplo são os valores padrões para o desenvolvimento.
 
 `POSTGRES_USER`: Usuário do Postgres. Exemplo: `POSTGRES_USER=admin`.
@@ -80,6 +105,7 @@ Variáveis relacionadas as configurações do banco de dados. Como exemplo são 
 `DATABASE_URL`: Url fornecida pelos provedores. Exemplo `DATABASE_URL="postgresql://admin:admin@localhost:54320/database?schema=public"`
 
 ---
+
 Variáveis relacionadas as configurações de serviços externos.
 
 `PORT`: Porta da aplicação. Exemplo: `PORT=3333`.
@@ -94,7 +120,7 @@ Variáveis relacionadas as configurações de serviços externos.
 
 `MAIL_USER`: Email utilizado pela biblioteca. Exemplo: `MAIL_USER="mail_user@mail.com"`.
 
-`MAIL_PASS`: *Credenciais fornecidas pelo provedor de email. Exemplo: `MAIL_PASS="mail_pass"`.
+`MAIL_PASS`: \*Credenciais fornecidas pelo provedor de email. Exemplo: `MAIL_PASS="mail_pass"`.
 
 ---
 
@@ -105,7 +131,6 @@ Variáveis relacionadas as configurações de serviços externos.
 3. Ainda na aba de Verificação em duas etapas, procure por "Senhas de app".
 4. Selecione o app, escolha um nome e clique em gerar.
 5. No fim terá uma senha gerada. Só copiar e usar nas credenciais do `MAIL_PASS`.
-
 
 <a href='#top'>🔼 Voltar ao topo</a>
 
@@ -128,6 +153,7 @@ API of the Pet Journal platform that helps you take care of your pet.
 ```bash
 git clone https://github.com/PetJournal/petjournal.api.git
 ```
+
 1. Create a copy of the file `.env.example` with the name `.env`. In this file, replace the values for the variables with your favorite `localhost` port, the user name and password for the PostgreSQL database.
 
 > The app will only work properly if these data are correctly set in `.env` file.
@@ -138,28 +164,50 @@ git clone https://github.com/PetJournal/petjournal.api.git
 
 4. Run `yarn` command to install the project dependencies.
 
-5. Start [**Docker**](https://www.docker.com/) on your machine.
-
-6. To start the PostgreSQL database, run the command:
-```bash
-yarn docker:up
-```
-
-7. Perform database migrations.
+5. Perform database migrations.
 
 ```bash
 yarn migrate
 ```
 
-8. Run `yarn build` to "transpile" typescript code to javascript.
+6. Run `yarn build` to "transpile" typescript code to javascript.
 
-9. Run `yarn start` on your terminal to start application. You should receive the following message:
+7. Run `yarn start` on your terminal to start application. You should receive the following message:
 
 ```bash
 Server running at http://localhost:<port>}
 ```
 
-10. To view the documentation with the available routes, access `localhost:<port>/api/docs`. If you prefer a dark theme, you can go to `localhost:<port>/api/docs/dark`.
+8. To view the documentation with the available routes, access `localhost:<port>/api/docs`. If you prefer a dark theme, you can go to `localhost:<port>/api/docs/dark`.
+
+## ⚙️ How to use (Docker)
+
+0. Download this repository by clicking the green Code button at the top of the page and then clicking Download ZIP. Or, if you prefer, use the terminal (Git Bash, Powershell, etc.) and run the command:
+
+```bash
+git clone https://github.com/PetJournal/petjournal.api.git
+```
+
+1. Create the .env file at the root of the project and configure the necessary environment variables to start the Docker containers.
+
+```bash
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=
+MAIL_SERVICE=
+MAIL_USER=
+MAIL_PASS=
+```
+
+2. Start Docker on your machine.
+
+3. To start the database and API containers, run the command:
+
+```bash
+yarn docker:up
+```
+
+4. The application will be available on port 3334 and you can access the documentation at `http://localhost:3334/api/docs`. If you prefer a dark theme, you can access it at `http://localhost:3334/api/docs/dark`.
 
 ## Environment variables
 
@@ -168,8 +216,8 @@ Server running at http://localhost:<port>}
 `NODE_ENV`: This variable define which environment the application is running. Example: `NODE_ENV=development`.
 
 ---
-Variables related to database settings. As an example are the default values for development.
 
+Variables related to database settings. As an example are the default values for development.
 
 `POSTGRES_USER`: Postgres user. Example: `POSTGRES_USER=admin`.
 
@@ -184,6 +232,7 @@ Variables related to database settings. As an example are the default values for
 `DATABASE_URL`: Url provided by database providers. Exemple `DATABASE_URL="postgresql://admin:admin@localhost:54320/database?schema=public"`
 
 ---
+
 Variables related to settings by third party services.
 
 `PORT`: Application port. Exemple: `PORT=3333`.
@@ -198,11 +247,12 @@ Variables related to settings by third party services.
 
 `MAIL_USER`: E-mail used by the library. Exemple: `MAIL_USER="mail_user@mail.com"`.
 
-`MAIL_PASS`: *Credentials provided by the email provider. Exemple: `MAIL_PASS="mail_pass"`.
+`MAIL_PASS`: \*Credentials provided by the email provider. Exemple: `MAIL_PASS="mail_pass"`.
 
 ---
 
 \* Example of how to get `MAIL_PASS` in email provider Gmail:
+
 1. Enter the security settings of your Gmail account.
 2. Look for the "Two-Step Verification" option and enable it.
 3. After that, still on the 2-Step Verification tab, look for "App Password".
