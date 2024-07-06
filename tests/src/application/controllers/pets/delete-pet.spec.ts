@@ -33,10 +33,20 @@ describe('DeletePet Controller', () => {
     expect(httpResponse).toEqual(notAcceptable(new InvalidParamError('anyField')))
   })
 
-  it('Should return 500 (ServerError) if deletePet throws', async () => {
+  it('Should return 500 (ServerError) if delete throws', async () => {
     const { sut, deletePetStub } = makeSut()
     jest.spyOn(deletePetStub, 'delete').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(makeFakeServerError())
+  })
+
+  it('Should call delete with correct values', async () => {
+    const { sut, deletePetStub } = makeSut()
+    const deletePetSpy = jest.spyOn(deletePetStub, 'delete')
+    await sut.handle(httpRequest)
+    expect(deletePetSpy).toHaveBeenCalledWith({
+      guardianId: httpRequest.userId,
+      petId: httpRequest.params.petId
+    })
   })
 })
