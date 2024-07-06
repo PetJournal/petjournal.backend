@@ -1,12 +1,12 @@
 import { type DeletePetByIdRepository, type LoadGuardianByIdRepository, type LoadPetByIdRepository } from '@/data/protocols'
 
 export interface DeletePet {
-  delete: (petId: DeletePet.Param) => Promise<DeletePet.Result>
+  delete: (params: DeletePet.Params) => Promise<DeletePet.Result>
 }
 
 export namespace DeletePet {
 
-  export type Param = {
+  export type Params = {
     guardianId: string
     petId: string
   }
