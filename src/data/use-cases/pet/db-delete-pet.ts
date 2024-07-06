@@ -11,7 +11,7 @@ export class DbDeletePet implements DeletePet {
     this.petRepository = petRepository
   }
 
-  async delete ({ petId, guardianId }: DeletePet.Param): Promise<DeletePet.Result> {
+  async delete ({ petId, guardianId }: DeletePet.Params): Promise<DeletePet.Result> {
     const guardian = await this.guardianRepository.loadById(guardianId)
     if (!guardian) {
       return {

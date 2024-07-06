@@ -26,7 +26,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbDeletePet  Use Case', () => {
-  const params: DeletePet.Param = {
+  const params: DeletePet.Params = {
     guardianId: 'any_guardian_id',
     petId: 'any_pet_id'
   }
