@@ -14,7 +14,8 @@ import {
   type LoadDogBreeds,
   type LoadCatSizes,
   type LoadDogSizes,
-  type LoadPets
+  type LoadPets,
+  type DeletePet
 } from '@/domain/use-cases'
 import { mockTokenService } from '@/tests/utils/stubs/service.stub'
 import { mockFakeAppointPet, mockFakePetAdded, mockFakePetUpdated, mockFakePetByGuardianIdLoaded, mockFakeSpecieAdded } from '../mocks'
@@ -126,6 +127,17 @@ const makeFakeUpdatePetUseCase = (): UpdatePet => {
   return new UpdatePetStub()
 }
 
+const makeFakeDeletePetUseCase = (): DeletePet => {
+  class DeletePetStub implements DeletePet {
+    async delete (params: DeletePet.Params): Promise<DeletePet.Result> {
+      return {
+        isSuccess: true
+      }
+    }
+  }
+  return new DeletePetStub()
+}
+
 const makeFakeAppointSpecieUseCase = (): AppointSpecie => {
   class AppointOtherSpecieStub implements AppointSpecie {
     async appoint (specieName: AppointSpecie.Params): Promise<AppointSpecie.Result> {
@@ -210,6 +222,7 @@ export {
   makeFakeAddPetUseCase,
   makeFakeLoadPetsUseCase,
   makeFakeUpdatePetUseCase,
+  makeFakeDeletePetUseCase,
   makeFakeAuthenticationUseCase,
   makeFakeForgetPasswordUseCase,
   makeFakeChangePasswordUseCase,

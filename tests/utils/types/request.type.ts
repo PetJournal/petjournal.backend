@@ -71,6 +71,13 @@ interface UpdatePetRequest {
   }
 }
 
+interface DeletePetRequest {
+  userId: string
+  params: {
+    petId: string
+  }
+}
+
 export {
   type AuthMiddlewareRequest,
   type LoginRequest,
@@ -79,5 +86,6 @@ export {
   type ChangePasswordRequest,
   type WaitingCodeRequest,
   type PetRegistryRequest,
-  type UpdatePetRequest
+  type UpdatePetRequest,
+  type DeletePetRequest
 }
