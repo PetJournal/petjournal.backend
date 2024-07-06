@@ -1,6 +1,6 @@
 import { PetDeleteController } from '@/application/controllers'
 import { InvalidParamError } from '@/application/errors'
-import { notAcceptable } from '@/application/helpers'
+import { notAcceptable, success } from '@/application/helpers'
 import { type DeletePet } from '@/domain/use-cases'
 import { makeFakeDeletePetRequest, makeFakeDeletePetUseCase, makeFakeServerError } from '@/tests/utils'
 
@@ -48,5 +48,14 @@ describe('DeletePet Controller', () => {
       guardianId: httpRequest.userId,
       petId: httpRequest.params.petId
     })
+  })
+
+  it('Should return 200 (success) if pet was deleted', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(success({
+      message: 'Pet deleted',
+      petId: 'any_id'
+    }))
   })
 })
