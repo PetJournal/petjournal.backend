@@ -293,4 +293,12 @@ describe('DELETE - /api/pet/:petId Route', () => {
 
     })
   })
+
+  it('Should return 400 if no access token is provided', async () => {
+    await makeSetup()
+    await request(app)
+      .delete('/api/pet/any_id')
+      .set('Authorization', '')
+      .expect(400)
+  })
 })
