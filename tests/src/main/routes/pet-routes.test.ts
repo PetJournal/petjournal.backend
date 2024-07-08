@@ -256,4 +256,12 @@ describe('PUT - /api/pet/:petId Route', () => {
       .set('Authorization', '')
       .expect(400)
   })
+
+  it('Should return 406 (NotAcceptable) if invalid petId is Provided', async () => {
+    const { accessToken } = await makeSetup()
+    await request(app)
+      .put('/api/pet/invalid_pet_id')
+      .set('Authorization', accessToken)
+      .expect(406)
+  })
 })
