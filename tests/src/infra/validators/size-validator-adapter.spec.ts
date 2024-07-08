@@ -24,4 +24,12 @@ describe('Size Validator Adapter', () => {
     const isValid = sut.isValid('valid_size')
     expect(isValid).toBe(true)
   })
+
+  it('Should call validator with correct size', () => {
+    const sut = makeSut()
+    const regexSize = /^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ ()]/
+    const matchesSizeSpy = jest.spyOn(validator, 'matches')
+    sut.isValid('valid_size')
+    expect(matchesSizeSpy).toHaveBeenCalledWith('valid_size', regexSize)
+  })
 })
