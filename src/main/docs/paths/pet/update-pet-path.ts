@@ -2,7 +2,7 @@ export const updatePetPath = {
   put: {
     tags: ['pet'],
     summary: 'update an existent pet',
-    description: 'if you don\'t want change some field, just put null on it, then your field will use the save data',
+    description: '',
     security: [{
       bearerAuth: []
     }],
