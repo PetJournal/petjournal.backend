@@ -248,4 +248,12 @@ describe('PUT - /api/pet/:petId Route', () => {
       dateOfBirth: '2024-06-05T23:40:42.628Z'
     })
   })
+
+  it('Should return 400 if no access token is provided', async () => {
+    await makeSetup()
+    await request(app)
+      .put('/api/pet/any_id')
+      .set('Authorization', '')
+      .expect(400)
+  })
 })
