@@ -1,11 +1,4 @@
 import { PetGenderValidatorAdapter } from '@/infra/validators'
-import validator from 'validator'
-
-jest.mock('validator', () => ({
-  matches (): boolean {
-    return true
-  }
-}))
 
 const makeSut = (): PetGenderValidatorAdapter => {
   return new PetGenderValidatorAdapter()
@@ -14,8 +7,16 @@ const makeSut = (): PetGenderValidatorAdapter => {
 describe('PetGender Validator Adapter', () => {
   it('Should return false if validation returns false', () => {
     const sut = makeSut()
-    jest.spyOn(validator, 'matches').mockReturnValueOnce(false)
-    const isValid = sut.isValid('invalid_gender', 'gender')
+    const isValid = sut.isValid({ gender: 'invalid_gender' }, 'gender')
     expect(isValid).toBe(false)
+  })
+
+  it('Should return true if validation returns true', () => {
+    const input = {
+      gender: 'M'
+    }
+    const sut = makeSut()
+    const isValid = sut.isValid(input, 'gender')
+    expect(isValid).toBe(true)
   })
 })
