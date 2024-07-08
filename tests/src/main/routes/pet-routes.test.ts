@@ -265,3 +265,48 @@ describe('PUT - /api/pet/:petId Route', () => {
       .expect(406)
   })
 })
+
+describe('DELETE - /api/pet/:petId Route', () => {
+  it('ensure delete a pet', async () => {
+    const { accessToken } = await makeSetup()
+    const pet = await request(app)
+      .post('/api/pet')
+      .set('Authorization', accessToken)
+      .send({
+        specieName: 'Cachorro',
+        petName: 'any pet name',
+        gender: 'M',
+        breedName: 'Afghan Hound',
+        size: 'Mini (Até 6Kg)',
+        dateOfBirth: '2024-06-05T23:40:42.628Z',
+        castrated: true
+      })
+
+    const response = await request(app)
+      .delete(`/api/pet/${pet.body.id as string}`)
+      .set('Authorization', accessToken)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toStrictEqual({
+      message: 'Pet deleted',
+      petId: pet.body.id
+
+    })
+  })
+
+  it('Should return 400 if no access token is provided', async () => {
+    await makeSetup()
+    await request(app)
+      .delete('/api/pet/any_id')
+      .set('Authorization', '')
+      .expect(400)
+  })
+
+  it('Should return 406 (NotAcceptable) if invalid petId is Provided', async () => {
+    const { accessToken } = await makeSetup()
+    await request(app)
+      .delete('/api/pet/invalid_pet_id')
+      .set('Authorization', accessToken)
+      .expect(406)
+  })
+})

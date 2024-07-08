@@ -1,7 +1,12 @@
 import { prisma as db } from '@/infra/repos/postgresql/prisma'
-import { type LoadPetByGuardianIdRepository, type AddPetRepository, type UpdatePetRepository, type LoadPetByIdRepository } from '@/data/protocols'
+import { type LoadPetByGuardianIdRepository, type AddPetRepository, type UpdatePetRepository, type LoadPetByIdRepository, type DeletePetByIdRepository } from '@/data/protocols'
 
-export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepository, UpdatePetRepository, LoadPetByIdRepository {
+export class PetRepository implements
+AddPetRepository,
+LoadPetByGuardianIdRepository,
+UpdatePetRepository,
+LoadPetByIdRepository,
+DeletePetByIdRepository {
   async add (params: AddPetRepository.Params): Promise<AddPetRepository.Result> {
     try {
       const pet = await db.pet.create({
@@ -145,5 +150,15 @@ export class PetRepository implements AddPetRepository, LoadPetByGuardianIdRepos
       }
     })
     return pet
+  }
+
+  async deleteById (petId: DeletePetByIdRepository.Params): Promise<DeletePetByIdRepository.Result> {
+    const pet = await db.pet.delete({
+      where: { id: petId }
+    })
+    if (!pet) {
+      return false
+    }
+    return true
   }
 }
