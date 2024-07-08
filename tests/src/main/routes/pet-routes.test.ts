@@ -193,7 +193,6 @@ describe('GET - /api/pet Route', () => {
   })
 })
 
-<<<<<<< HEAD
 describe('PUT - /api/pet/:petId Route', () => {
   it('ensure update a pet', async () => {
     const { accessToken } = await makeSetup()
@@ -267,8 +266,6 @@ describe('PUT - /api/pet/:petId Route', () => {
   })
 })
 
-=======
->>>>>>> 56dadd0978d466c79eafca6d8553b6466a041688
 describe('DELETE - /api/pet/:petId Route', () => {
   it('ensure delete a pet', async () => {
     const { accessToken } = await makeSetup()
