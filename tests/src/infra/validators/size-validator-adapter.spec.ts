@@ -18,4 +18,10 @@ describe('Size Validator Adapter', () => {
     const isValid = sut.isValid('invalid_size')
     expect(isValid).toBe(false)
   })
+
+  it('Should return true if validation returns true', () => {
+    const sut = makeSut()
+    const isValid = sut.isValid('valid_size')
+    expect(isValid).toBe(true)
+  })
 })
