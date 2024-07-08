@@ -1,3 +1,3 @@
 export interface PetGenderValidator {
-  isValid: (gender: any, fieldName: string) => boolean
+  isValid: (input: any, fieldName: string) => boolean
 }
