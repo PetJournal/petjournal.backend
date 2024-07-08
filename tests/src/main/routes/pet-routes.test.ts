@@ -192,3 +192,60 @@ describe('GET - /api/pet Route', () => {
     expect(response.body).toEqual([])
   })
 })
+
+describe('PUT - /api/pet/:petId Route', () => {
+  it('ensure update a pet', async () => {
+    const { accessToken } = await makeSetup()
+    const pet = await request(app)
+      .post('/api/pet')
+      .set('Authorization', accessToken)
+      .send({
+        specieName: 'Cachorro',
+        petName: 'any pet name',
+        gender: 'M',
+        breedName: 'Afghan Hound',
+        size: 'Mini (Até 6Kg)',
+        dateOfBirth: '2024-06-05T23:40:42.628Z',
+        castrated: true
+      })
+
+    const response = await request(app)
+      .put(`/api/pet/${pet.body.id as string}`)
+      .set('Authorization', accessToken)
+      .send({
+        petName: 'pet name updated'
+      })
+
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      guardian: {
+        id: expect.any(String),
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'johndoe@email.com',
+        phone: '11987654321'
+      },
+      specie: {
+        id: expect.any(String),
+        name: 'Cachorro'
+      },
+      specieAlias: null,
+      petName: 'pet name updated',
+      gender: 'M',
+      breedAlias: '',
+      breed: {
+        id: expect.any(String),
+        name: 'Afghan Hound',
+        specieId: expect.any(String)
+      },
+      size: {
+        id: expect.any(String),
+        name: 'Mini (Até 6Kg)',
+        specieId: expect.any(String)
+      },
+      castrated: true,
+      dateOfBirth: '2024-06-05T23:40:42.628Z'
+    })
+  })
+})
