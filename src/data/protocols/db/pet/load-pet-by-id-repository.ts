@@ -1,11 +1,11 @@
-export interface LoadPetByGuardianIdRepository {
-  loadByGuardianId: (guardianId: LoadPetByGuardianIdRepository.Params) => Promise<LoadPetByGuardianIdRepository.Result>
+export interface LoadPetByIdRepository {
+  loadById: (petId: LoadPetByIdRepository.Params) => Promise<LoadPetByIdRepository.Result>
 }
 
-export namespace LoadPetByGuardianIdRepository {
+export namespace LoadPetByIdRepository {
   export type Params = string
 
-  export type Result = Array<{
+  export type Result = {
     id: string
     guardianId: string
     specie: {
@@ -25,5 +25,6 @@ export namespace LoadPetByGuardianIdRepository {
       name: string
     }
     castrated: boolean
-  }>
+    dateOfBirth: Date
+  } | null
 }

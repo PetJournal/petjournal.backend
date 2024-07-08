@@ -7,7 +7,8 @@ import {
   type ForgetPasswordRequest,
   type ChangePasswordRequest,
   type WaitingCodeRequest,
-  type PetRegistryRequest
+  type PetRegistryRequest,
+  type UpdatePetRequest
 } from '@/tests/utils'
 
 const mockGuardianRequest = {
@@ -89,10 +90,29 @@ const makeFakePetRegistryRequest = (): PetRegistryRequest => {
     gender: PetGender.MALE,
     breedName: 'valid_breed_name',
     size: 'any_size',
+    castrated: false,
     dateOfBirth: new Date(2000, 10, 23)
   }
 
   return { body }
+}
+
+const makeFakeUpdatePetRequest = (): UpdatePetRequest => {
+  const body = {
+    specieName: 'valid_specie_id',
+    petName: 'any_name',
+    gender: PetGender.MALE,
+    breedName: 'valid_breed_name',
+    size: 'any_size',
+    castrated: false,
+    dateOfBirth: new Date(2000, 10, 23)
+  }
+  const userId = 'valid_guardian_id'
+  const params = {
+    petId: 'any_id'
+  }
+
+  return { body, params, userId }
 }
 
 export {
@@ -103,5 +123,6 @@ export {
   makeFakeWaitingCodeRequest,
   makeFakeAuthorizationRequest,
   makeFakePayload,
-  makeFakePetRegistryRequest
+  makeFakePetRegistryRequest,
+  makeFakeUpdatePetRequest
 }

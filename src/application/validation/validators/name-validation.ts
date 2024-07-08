@@ -9,7 +9,7 @@ export class NameValidation implements Validation {
   ) {}
 
   validate (input: any): Error | void {
-    if (typeof input[this.fieldName] !== 'string') {
+    if (typeof input[this.fieldName] !== 'string' && input[this.fieldName] !== null) {
       return new InvalidParamError(this.fieldName)
     }
     const isValid = this.validator.isValid(input[this.fieldName])

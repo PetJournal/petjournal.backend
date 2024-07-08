@@ -24,7 +24,7 @@ describe('DbLoadPetsByGuardianId', () => {
     it('Should throw if petRepository throws', async () => {
       const { sut, petRepositoryStub } = makeSut()
       const guardianId = { guardianId: 'any_guardian_id' }
-      jest.spyOn(petRepositoryStub, 'load').mockRejectedValueOnce(new Error())
+      jest.spyOn(petRepositoryStub, 'loadByGuardianId').mockRejectedValueOnce(new Error())
       const promise = sut.load(guardianId)
       await expect(promise).rejects.toThrow()
     })
@@ -32,7 +32,7 @@ describe('DbLoadPetsByGuardianId', () => {
     it('Should call load method with correct value', async () => {
       const { sut, petRepositoryStub } = makeSut()
       const guardianId = { guardianId: 'any_guardian_id' }
-      const loadSpy = jest.spyOn(petRepositoryStub, 'load')
+      const loadSpy = jest.spyOn(petRepositoryStub, 'loadByGuardianId')
       await sut.load(guardianId)
       expect(loadSpy).toHaveBeenCalledWith('any_guardian_id')
     })
@@ -40,7 +40,7 @@ describe('DbLoadPetsByGuardianId', () => {
     it('Should petRepository return an empty array if there are no pets registered', async () => {
       const { sut, petRepositoryStub } = makeSut()
       const guardianId = { guardianId: 'any_guardian_id' }
-      jest.spyOn(petRepositoryStub, 'load').mockResolvedValueOnce([])
+      jest.spyOn(petRepositoryStub, 'loadByGuardianId').mockResolvedValueOnce([])
       const httpResponse = await sut.load(guardianId)
       expect(httpResponse).toEqual([])
     })

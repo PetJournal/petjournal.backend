@@ -12,7 +12,7 @@ export class BreedValidation implements Validation {
   }
 
   validate (input: any): void | Error {
-    if (typeof input[this.breedName] !== 'string') {
+    if (typeof input[this.breedName] !== 'string' && input[this.breedName] !== null) {
       return new InvalidParamError(this.breedName)
     }
     const isValid = this.validator.isValid(input[this.breedName])

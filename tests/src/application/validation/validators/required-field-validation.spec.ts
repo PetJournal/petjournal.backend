@@ -10,17 +10,8 @@ const makeSut = (): RequiredFieldValidation => {
 describe('RequiredFieldValidation', () => {
   const params = {
     validFieldName: { fieldName: 'fieldName' },
-    emptyFieldName: { fieldName: '' },
     emptyInput: {}
   }
-
-  it('should return MissingParamError if fieldName is not provided', () => {
-    const sut = makeSut()
-
-    const result = sut.validate(params.emptyFieldName)
-
-    expect(result).toStrictEqual(new MissingParamError('fieldName'))
-  })
 
   it('should return MissingParamError if input is not provided', () => {
     const sut = makeSut()

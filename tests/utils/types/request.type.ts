@@ -50,7 +50,24 @@ interface PetRegistryRequest {
     gender: string
     breedName: string
     size: string
+    castrated: boolean
     dateOfBirth: Date
+  }
+}
+
+interface UpdatePetRequest {
+  userId?: string
+  body: {
+    specieName: string
+    petName: string
+    gender: string
+    breedName: string
+    size: string
+    castrated: boolean
+    dateOfBirth: Date
+  }
+  params: {
+    petId: string
   }
 }
 
@@ -61,5 +78,6 @@ export {
   type ForgetPasswordRequest,
   type ChangePasswordRequest,
   type WaitingCodeRequest,
-  type PetRegistryRequest
+  type PetRegistryRequest,
+  type UpdatePetRequest
 }
