@@ -31,7 +31,8 @@ DeletePetByIdRepository {
               firstName: true,
               lastName: true,
               email: true,
-              phone: true
+              phone: true,
+              emailConfirmation: true
             }
           },
           specie: true,
@@ -66,7 +67,8 @@ DeletePetByIdRepository {
             firstName: true,
             lastName: true,
             email: true,
-            phone: true
+            phone: true,
+            emailConfirmation: true
           }
         },
         specie: true,

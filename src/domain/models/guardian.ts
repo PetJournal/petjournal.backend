@@ -7,4 +7,5 @@ export interface Guardian {
   accessToken: string | null
   verificationToken: string
   verificationTokenCreatedAt: Date
+  emailConfirmation: boolean
 }
