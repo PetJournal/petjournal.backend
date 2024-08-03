@@ -17,6 +17,7 @@ model Guardian {
   accessToken                String?  @map("access_token")
   verificationToken          String   @map("verification_token")
   verificationTokenCreatedAt DateTime @default(now()) @map("verification_token_created_at")
+  emailConfirmation          Boolean  @default(false) @map("email_confirmation")
   pets                       Pet[]
 
   @@map("guardians")
