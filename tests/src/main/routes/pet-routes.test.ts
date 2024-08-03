@@ -224,7 +224,8 @@ describe('PUT - /api/pet/:petId Route', () => {
         firstName: 'John',
         lastName: 'Doe',
         email: 'johndoe@email.com',
-        phone: '11987654321'
+        phone: '11987654321',
+        emailConfirmation: false
       },
       specie: {
         id: expect.any(String),
@@ -290,7 +291,6 @@ describe('DELETE - /api/pet/:petId Route', () => {
     expect(response.body).toStrictEqual({
       message: 'Pet deleted',
       petId: pet.body.id
-
     })
   })
 

@@ -37,7 +37,8 @@ export class GuardianAccountRepository implements
         lastName: true,
         email: true,
         phone: true,
-        verificationToken: false
+        verificationToken: false,
+        emailConfirmation: true
       }
     })
   }
