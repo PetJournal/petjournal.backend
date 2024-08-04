@@ -2,7 +2,7 @@ import { EmailConfirmationController } from '@/application/controllers'
 import { NotFoundError } from '@/application/errors'
 import { badRequest } from '@/application/helpers'
 import { type EmailConfirmation } from '@/domain/use-cases'
-import { makeFakeEmailConfirmationRequest, makeFakeEmailConfirmationUseCase } from '@/tests/utils'
+import { makeFakeEmailConfirmationRequest, makeFakeEmailConfirmationUseCase, makeFakeServerError } from '@/tests/utils'
 
 interface SutTypes {
   sut: EmailConfirmationController
@@ -34,5 +34,12 @@ describe('EmailConfirmation Controller', () => {
     })
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new NotFoundError('guardian')))
+  })
+
+  it('Should return 500 (ServerError) if EmailConfirmation throws', async () => {
+    const { sut, emailConfirmationStub } = makeSut()
+    jest.spyOn(emailConfirmationStub, 'confirm').mockRejectedValue(new Error())
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(makeFakeServerError())
   })
 })
