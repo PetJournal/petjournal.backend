@@ -5,7 +5,8 @@ import {
   type LoadGuardianByEmailRepository,
   type UpdateAccessTokenRepository,
   type UpdateGuardianPasswordRepository,
-  type UpdateVerificationTokenRepository
+  type UpdateVerificationTokenRepository,
+  type UpdateEmailConfirmationRepository
 } from '@/data/protocols'
 
 export class GuardianAccountRepository implements
@@ -14,7 +15,8 @@ export class GuardianAccountRepository implements
   LoadGuardianByIdRepository,
   UpdateAccessTokenRepository,
   UpdateGuardianPasswordRepository,
-  UpdateVerificationTokenRepository {
+  UpdateVerificationTokenRepository,
+  UpdateEmailConfirmationRepository {
   async add (guardianData: AddGuardianRepository.Params): Promise<AddGuardianRepository.Result> {
     const guardianHasEmailOrPhoneRegistered = await db.guardian.findFirst({
       where: {
@@ -102,6 +104,20 @@ export class GuardianAccountRepository implements
     await db.guardian.update({
       where: { id: userId },
       data: { password }
+    })
+
+    return true
+  }
+
+  async updateEmailConfirmation (userId: UpdateEmailConfirmationRepository.Params): Promise<UpdateEmailConfirmationRepository.Result> {
+    const result = await this.checkUserId(userId)
+    if (!result) {
+      return false
+    }
+
+    await db.guardian.update({
+      where: { id: userId },
+      data: { emailConfirmation: true }
     })
 
     return true
