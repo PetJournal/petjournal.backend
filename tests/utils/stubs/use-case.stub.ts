@@ -15,7 +15,8 @@ import {
   type LoadCatSizes,
   type LoadDogSizes,
   type LoadPets,
-  type DeletePet
+  type DeletePet,
+  type EmailConfirmation
 } from '@/domain/use-cases'
 import { mockTokenService } from '@/tests/utils/stubs/service.stub'
 import { mockFakeAppointPet, mockFakePetAdded, mockFakePetUpdated, mockFakePetByGuardianIdLoaded, mockFakeSpecieAdded } from '../mocks'
@@ -45,6 +46,22 @@ const makeFakeAddGuardianUseCase = (): AddGuardian => {
     }
   }
   return new AddGuardianStub()
+}
+
+const makeFakeEmailConfirmationUseCase = (): EmailConfirmation => {
+  class EmailConfirmationStub implements EmailConfirmation {
+    async confirm (userId: EmailConfirmation.Params): Promise<EmailConfirmation.Result> {
+      return {
+        isSuccess: true,
+        data: {
+          userId: 'any_id',
+          email: 'any_email@mail.com'
+
+        }
+      }
+    }
+  }
+  return new EmailConfirmationStub()
 }
 
 const makeFakeAuthenticationUseCase = (): Authentication => {
@@ -227,6 +244,7 @@ export {
   makeFakeForgetPasswordUseCase,
   makeFakeChangePasswordUseCase,
   makeFakeCreateAccessTokenUseCase,
+  makeFakeEmailConfirmationUseCase,
   makeFakeValidateVerificationTokenUseCase,
   makeFakeAppointSpecieUseCase,
   makeLoadGuardianNameUseCase,
