@@ -58,5 +58,18 @@ describe('DbEmailConfirmation', () => {
       const promise = sut.confirm('any_id')
       await expect(promise).rejects.toThrow()
     })
+
+    it('Should return true if emailConfirmation are updated', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      jest.spyOn(guardianRepositoryStub, 'updateEmailConfirmation').mockResolvedValueOnce(true)
+      const response = await sut.confirm('any_id')
+      expect(response).toEqual({
+        isSuccess: true,
+        data: {
+          userId: 'any_id',
+          email: 'any_email@mail.com'
+        }
+      })
+    })
   })
 })
