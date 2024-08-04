@@ -24,5 +24,12 @@ describe('DbEmailConfirmation', () => {
       await sut.confirm('any_id')
       expect(loadByIdSpy).toHaveBeenCalledWith('any_id')
     })
+
+    it('Should throw if guardianRepository throws', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      jest.spyOn(guardianRepositoryStub, 'loadById').mockRejectedValueOnce(new Error())
+      const promise = sut.confirm('any_id')
+      await expect(promise).rejects.toThrow()
+    })
   })
 })
