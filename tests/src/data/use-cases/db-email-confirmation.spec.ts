@@ -1,3 +1,4 @@
+import { NotFoundError } from '@/application/errors'
 import { type LoadGuardianByIdRepository, type UpdateEmailConfirmationRepository } from '@/data/protocols'
 import { DbEmailConfirmation } from '@/data/use-cases'
 import { makeFakeGuardianRepository } from '@/tests/utils'
@@ -30,6 +31,16 @@ describe('DbEmailConfirmation', () => {
       jest.spyOn(guardianRepositoryStub, 'loadById').mockRejectedValueOnce(new Error())
       const promise = sut.confirm('any_id')
       await expect(promise).rejects.toThrow()
+    })
+
+    it('Should return Not Found Error if guardianRepository returns null', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      jest.spyOn(guardianRepositoryStub, 'loadById').mockResolvedValueOnce(null)
+      const guardian = await sut.confirm('invalid_id')
+      expect(guardian).toEqual({
+        isSuccess: false,
+        error: new NotFoundError('guardian')
+      })
     })
   })
 })
