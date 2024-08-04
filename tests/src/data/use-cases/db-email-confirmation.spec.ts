@@ -43,4 +43,13 @@ describe('DbEmailConfirmation', () => {
       })
     })
   })
+
+  describe('GuardianRepository UpdateEmailConfirmation', () => {
+    it('Should call updateEmailConfirmation method with correct value', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      const updateEmailConfirmationSpy = jest.spyOn(guardianRepositoryStub, 'updateEmailConfirmation')
+      await sut.confirm('any_id')
+      expect(updateEmailConfirmationSpy).toHaveBeenCalledWith('any_id')
+    })
+  })
 })
