@@ -31,7 +31,8 @@ import {
   type LoadPetByGuardianIdRepository,
   type LoadPetByIdRepository,
   type UpdatePetRepository,
-  type DeletePetByIdRepository
+  type DeletePetByIdRepository,
+  type UpdateEmailConfirmationRepository
 } from '@/data/protocols'
 import { type LoadCatSizesRepository } from '@/data/protocols/db/size/load-cat-sizes-repository'
 import { type LoadDogSizesRepository } from '@/data/protocols/db/size/load-dog-sizes-repository'
@@ -51,14 +52,16 @@ LoadGuardianByEmailRepository &
 LoadGuardianByIdRepository &
 UpdateAccessTokenRepository &
 UpdateGuardianPasswordRepository &
-UpdateVerificationTokenRepository => {
+UpdateVerificationTokenRepository &
+UpdateEmailConfirmationRepository => {
   class GuardianRepositoryStub implements
   AddGuardianRepository,
   LoadGuardianByEmailRepository,
   LoadGuardianByIdRepository,
   UpdateAccessTokenRepository,
   UpdateGuardianPasswordRepository,
-  UpdateVerificationTokenRepository {
+  UpdateVerificationTokenRepository,
+  UpdateEmailConfirmationRepository {
     async add (guardian: AddGuardianRepository.Params): Promise<AddGuardianRepository.Result> {
       return mockFakeGuardianAdded()
     }
@@ -80,6 +83,10 @@ UpdateVerificationTokenRepository => {
     }
 
     async updateVerificationToken (credentials: UpdateVerificationTokenRepository.Params): Promise<UpdateVerificationTokenRepository.Result> {
+      return true
+    }
+
+    async updateEmailConfirmation (userId: UpdateEmailConfirmationRepository.Params): Promise<UpdateEmailConfirmationRepository.Result> {
       return true
     }
   }
