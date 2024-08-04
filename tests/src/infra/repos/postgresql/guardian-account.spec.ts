@@ -198,4 +198,13 @@ describe('GuardianAccountRepository', () => {
       expect(response).toBe(true)
     })
   })
+
+  describe('UpdateEmailConfirmation', () => {
+    it('Should return true when emailConfirmation is updated', async () => {
+      const sut = makeSut()
+      const { id } = await sut.add(input) as any
+      const response = await sut.updateEmailConfirmation(id)
+      expect(response).toBe(true)
+    })
+  })
 })

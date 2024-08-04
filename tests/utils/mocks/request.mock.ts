@@ -9,7 +9,8 @@ import {
   type WaitingCodeRequest,
   type PetRegistryRequest,
   type UpdatePetRequest,
-  type DeletePetRequest
+  type DeletePetRequest,
+  type EmailConfirmationRequest
 } from '@/tests/utils'
 
 const mockGuardianRequest = {
@@ -125,6 +126,13 @@ const makeFakeDeletePetRequest = (): DeletePetRequest => {
   return { userId, params }
 }
 
+const makeFakeEmailConfirmationRequest = (): EmailConfirmationRequest => {
+  const params = {
+    userId: 'any_id'
+  }
+  return { params }
+}
+
 export {
   makeFakeSignUpRequest,
   makeFakeLoginRequest,
@@ -135,5 +143,6 @@ export {
   makeFakePayload,
   makeFakePetRegistryRequest,
   makeFakeUpdatePetRequest,
-  makeFakeDeletePetRequest
+  makeFakeDeletePetRequest,
+  makeFakeEmailConfirmationRequest
 }
