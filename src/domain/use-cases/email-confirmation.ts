@@ -6,7 +6,11 @@ export interface EmailConfirmation {
 
 export namespace EmailConfirmation {
   export type Params = string
-  export type Result = boolean | null
+  export type Result = {
+    isSuccess: boolean
+    error?: Error
+    data?: any
+  }
   export type Dependencies = {
     guardianRepository: LoadGuardianByIdRepository & UpdateEmailConfirmationRepository
   }

@@ -110,16 +110,12 @@ export class GuardianAccountRepository implements
   }
 
   async updateEmailConfirmation (userId: UpdateEmailConfirmationRepository.Params): Promise<UpdateEmailConfirmationRepository.Result> {
-    const result = await this.checkUserId(userId)
-    if (!result) {
-      return false
-    }
-
-    await db.guardian.update({
+    const result = await db.guardian.update({
       where: { id: userId },
-      data: { emailConfirmation: true }
+      data: { emailConfirmation: true },
+      select: { emailConfirmation: true }
     })
 
-    return true
+    return result.emailConfirmation
   }
 }

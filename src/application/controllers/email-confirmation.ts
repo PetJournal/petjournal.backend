@@ -1,6 +1,6 @@
 import { type EmailConfirmation } from '@/domain/use-cases'
 import { type Controller } from '../protocols'
-import { type HttpRequest, type HttpResponse, serverError, success, unauthorized } from '../helpers'
+import { badRequest, type HttpRequest, type HttpResponse, serverError, success } from '../helpers'
 
 export class EmailConfirmationController implements Controller {
   private readonly emailConfirmation: EmailConfirmation
@@ -12,11 +12,15 @@ export class EmailConfirmationController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const userId = httpRequest.params.userId
-      const emailConfirmation = await this.emailConfirmation.confirm(userId)
-      if (!emailConfirmation) {
-        return unauthorized()
+      const result = await this.emailConfirmation.confirm(userId)
+      if (!result.isSuccess) {
+        return badRequest(result.error as Error)
       }
-      return success(emailConfirmation)
+      return success({
+        message: 'email confirmed',
+        userId,
+        email: result.data.email
+      })
     } catch (error) {
       return serverError(error as Error)
     }
