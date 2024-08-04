@@ -3,5 +3,5 @@ import { adaptRoute } from '../adapters'
 import { makeEmailConfirmationController } from '../factories'
 
 export default (router: Router): void => {
-  router.patch('/guardian/:userId', adaptRoute(makeEmailConfirmationController()))
+  router.patch('/guardian/email-confirmation/:userId', adaptRoute(makeEmailConfirmationController()))
 }
