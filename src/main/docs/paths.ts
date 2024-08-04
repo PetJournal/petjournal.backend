@@ -12,7 +12,8 @@ import {
   loadDogSizesPath,
   petRegistryPath,
   updatePetPath,
-  deletePetPath
+  deletePetPath,
+  emailConfirmationPath
 } from './paths/'
 
 export default {
@@ -20,6 +21,7 @@ export default {
   '/login': loginPath,
   '/forget-password': forgetPasswordPath,
   '/guardian/change-password': changePasswordPath,
+  '/guardian/email-confirmation/{userId}': emailConfirmationPath,
   '/waiting-code': waitingCodePath,
   '/pet': { ...petRegistryPath, ...loadPetsPath },
   '/pet/{petId}': { ...updatePetPath, ...deletePetPath },
