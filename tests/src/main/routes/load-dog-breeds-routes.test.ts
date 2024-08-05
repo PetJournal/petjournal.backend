@@ -7,7 +7,7 @@ describe('LoadDogBreeds route', () => {
   afterEach(async () => { await PrismaHelper.disconnect() })
 
   it('Should return 200 on success', async () => {
-    await request(app)
+    const guardian = await request(app)
       .post('/api/signup')
       .send({
         firstName: 'John',
@@ -18,6 +18,10 @@ describe('LoadDogBreeds route', () => {
         phone: '11987654321',
         isPrivacyPolicyAccepted: true
       })
+
+    await request(app)
+      .patch(`/api/guardian/email-confirmation/${guardian.body.id as string}`)
+
     const { body } = await request(app)
       .post('/api/login')
       .send({

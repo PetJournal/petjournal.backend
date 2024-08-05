@@ -27,6 +27,9 @@ const makeSetup = async (): Promise<{ accessToken: string, fakeUser: FakeUser }>
       isPrivacyPolicyAccepted: true
     })
 
+  await request(app)
+    .patch(`/api/guardian/email-confirmation/${resSignUp.body.id as string}`)
+
   const resLogin = await request(app)
     .post('/api/login')
     .send({
@@ -92,7 +95,7 @@ const makeSetup = async (): Promise<{ accessToken: string, fakeUser: FakeUser }>
       }
   })
 
-  return { accessToken: resLogin.body.accessToken, fakeUser: resSignUp.body }
+  return { accessToken: resLogin.body.accessToken, fakeUser: { ...resSignUp.body, emailConfirmation: true } }
 }
 
 describe('POST - /api/pet Route', () => {
@@ -225,7 +228,7 @@ describe('PUT - /api/pet/:petId Route', () => {
         lastName: 'Doe',
         email: 'johndoe@email.com',
         phone: '11987654321',
-        emailConfirmation: false
+        emailConfirmation: true
       },
       specie: {
         id: expect.any(String),

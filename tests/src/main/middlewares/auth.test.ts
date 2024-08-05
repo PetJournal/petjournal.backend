@@ -43,7 +43,7 @@ describe('Authentication Middleware', () => {
   })
 
   it('Should return 200 and user ID if token is valid', async () => {
-    await request(app)
+    const guardian = await request(app)
       .post('/api/signup')
       .send({
         firstName: 'John',
@@ -54,6 +54,10 @@ describe('Authentication Middleware', () => {
         phone: '11987654321',
         isPrivacyPolicyAccepted: true
       })
+
+    await request(app)
+      .patch(`/api/guardian/email-confirmation/${guardian.body.id as string}`)
+
     const { body: { accessToken } } = await request(app)
       .post('/api/login')
       .send({
