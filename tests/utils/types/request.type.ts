@@ -78,6 +78,12 @@ interface DeletePetRequest {
   }
 }
 
+interface EmailConfirmationRequest {
+  params: {
+    userId: string
+  }
+}
+
 export {
   type AuthMiddlewareRequest,
   type LoginRequest,
@@ -87,5 +93,6 @@ export {
   type WaitingCodeRequest,
   type PetRegistryRequest,
   type UpdatePetRequest,
-  type DeletePetRequest
+  type DeletePetRequest,
+  type EmailConfirmationRequest
 }
