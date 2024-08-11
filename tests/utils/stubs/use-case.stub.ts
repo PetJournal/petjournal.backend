@@ -16,7 +16,8 @@ import {
   type LoadDogSizes,
   type LoadPets,
   type DeletePet,
-  type EmailConfirmation
+  type EmailConfirmation,
+  type SendEmail
 } from '@/domain/use-cases'
 import { mockTokenService } from '@/tests/utils/stubs/service.stub'
 import { mockFakeAppointPet, mockFakePetAdded, mockFakePetUpdated, mockFakePetByGuardianIdLoaded, mockFakeSpecieAdded } from '../mocks'
@@ -234,6 +235,15 @@ const makeLoadDogBreedsUseCase = (): LoadDogBreeds => {
   return new LoadDogBreedsStub()
 }
 
+const makeFakeSendEmailUseCase = (): SendEmail => {
+  class SendEmailStub implements SendEmail {
+    async send (data: SendEmail.Params): Promise<SendEmail.Result> {
+      return true
+    }
+  }
+  return new SendEmailStub()
+}
+
 export {
   makeFakeAddGuardianUseCase,
   makeFakeAddPetUseCase,
@@ -252,5 +262,6 @@ export {
   makeLoadCatBreedsUseCase,
   makeLoadDogBreedsUseCase,
   makeFakeLoadCatSizesUseCase,
-  makeFakeLoadDogSizesUSeCase
+  makeFakeLoadDogSizesUSeCase,
+  makeFakeSendEmailUseCase
 }

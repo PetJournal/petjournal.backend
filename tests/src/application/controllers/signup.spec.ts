@@ -1,8 +1,9 @@
-import { type AddGuardian } from '@/domain/use-cases'
+import { type SendEmail, type AddGuardian } from '@/domain/use-cases'
 import { type Validation } from '@/application/protocols'
 import { SignUpController } from '@/application/controllers'
 import {
   makeFakeAddGuardianUseCase,
+  makeFakeSendEmailUseCase,
   makeFakeServerError,
   makeFakeSignUpRequest,
   makeFakeValidation
@@ -14,21 +15,25 @@ interface SutTypes {
   sut: SignUpController
   addGuardianStub: AddGuardian
   validationStub: Validation
+  sendEmailStub: SendEmail
 }
 
 const makeSut = (): SutTypes => {
   const addGuardianStub = makeFakeAddGuardianUseCase()
+  const sendEmailStub = makeFakeSendEmailUseCase()
   const validationStub = makeFakeValidation()
   const dependencies: SignUpController.Dependencies = {
     addGuardian: addGuardianStub,
-    validation: validationStub
+    validation: validationStub,
+    sendEmail: sendEmailStub
   }
   const sut = new SignUpController(dependencies)
-  return { sut, addGuardianStub, validationStub }
+  return { sut, addGuardianStub, validationStub, sendEmailStub }
 }
 
 describe('SignUp Controller', () => {
   const httpRequest = makeFakeSignUpRequest()
+
   describe('AddGuardian', () => {
     it('Should return 409 (Conflict) if AddGuardian returns null', async () => {
       const { sut, addGuardianStub } = makeSut()
@@ -79,6 +84,15 @@ describe('SignUp Controller', () => {
         password: httpRequest.body.password,
         passwordConfirmation: httpRequest.body.passwordConfirmation
       })
+    })
+  })
+
+  describe('SendEmail', () => {
+    it('Should call SendEmail with correct value', async () => {
+      const { sut, sendEmailStub } = makeSut()
+      const sendSpy = jest.spyOn(sendEmailStub, 'send')
+      await sut.handle(httpRequest)
+      expect(sendSpy).toHaveBeenCalledWith({ email: httpRequest.body.email })
     })
   })
 
