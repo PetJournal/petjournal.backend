@@ -94,6 +94,13 @@ describe('SignUp Controller', () => {
       await sut.handle(httpRequest)
       expect(sendSpy).toHaveBeenCalledWith({ email: httpRequest.body.email })
     })
+
+    it('Should return 500 (ServerError) if SendEmail throws', async () => {
+      const { sut, sendEmailStub } = makeSut()
+      jest.spyOn(sendEmailStub, 'send').mockRejectedValue(new Error())
+      const httpResponse = await sut.handle(httpRequest)
+      expect(httpResponse).toEqual(makeFakeServerError())
+    })
   })
 
   test('Should return 201 (Created) if valid data are provide', async () => {
