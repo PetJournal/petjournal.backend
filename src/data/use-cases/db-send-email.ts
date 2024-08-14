@@ -1,17 +1,29 @@
 import { type SendEmail } from '@/domain/use-cases'
-import { type LoadGuardianByEmailRepository } from '../protocols'
+import { type EmailService, type LoadGuardianByEmailRepository } from '../protocols'
 
 export class DbSendEmail implements SendEmail {
-  private readonly guardianService: LoadGuardianByEmailRepository
+  private readonly guardianRepository: LoadGuardianByEmailRepository
+  private readonly emailService: EmailService
 
-  constructor ({ guardianService }: SendEmail.Dependencies) {
-    this.guardianService = guardianService
+  constructor ({ guardianRepository, emailService }: SendEmail.Dependencies) {
+    this.guardianRepository = guardianRepository
+    this.emailService = emailService
   }
 
   async send ({ email }: SendEmail.Params): Promise<SendEmail.Result> {
-    const guardian = await this.guardianService.loadByEmail(email)
+    const guardian = await this.guardianRepository.loadByEmail(email)
     if (!guardian) {
       throw new Error('Guardian not found')
     }
+
+    await this.emailService.send({
+      from: 'contato.petjournal@gmail.com',
+      to: guardian.email,
+      subject: 'Ative sua conta',
+      text: `
+          Olá ${guardian.firstName} ${guardian.lastName},\n
+          Acesse o link para ativar sua conta: http://localhost:3333/api/guardian/email-confirmation/${guardian.id}
+        `
+    })
   }
 }
