@@ -9,6 +9,9 @@ export class DbSendEmail implements SendEmail {
   }
 
   async send ({ email }: SendEmail.Params): Promise<SendEmail.Result> {
-    await this.guardianService.loadByEmail(email)
+    const guardian = await this.guardianService.loadByEmail(email)
+    if (!guardian) {
+      throw new Error('Guardian not found')
+    }
   }
 }
