@@ -1,18 +1,22 @@
-import { type LoadGuardianByEmailRepository } from '@/data/protocols'
+import { type EmailService, type LoadGuardianByEmailRepository } from '@/data/protocols'
 import { DbSendEmail } from '@/data/use-cases'
-import { makeFakeGuardianRepository } from '@/tests/utils'
+import { makeFakeEmailService, makeFakeGuardianRepository } from '@/tests/utils'
 
 interface SutTypes {
   sut: DbSendEmail
   guardianRepositoryStub: LoadGuardianByEmailRepository
+  emailServiceStub: EmailService
 }
 
 const makeSut = (): SutTypes => {
   const guardianRepositoryStub = makeFakeGuardianRepository()
-  const sut = new DbSendEmail({ guardianService: guardianRepositoryStub })
+  const emailServiceStub = makeFakeEmailService()
+  const sut = new DbSendEmail({ guardianRepository: guardianRepositoryStub, emailService: emailServiceStub })
+
   return {
     sut,
-    guardianRepositoryStub
+    guardianRepositoryStub,
+    emailServiceStub
   }
 }
 
@@ -38,5 +42,20 @@ describe('DbSendEmail', () => {
     jest.spyOn(guardianRepositoryStub, 'loadByEmail').mockResolvedValueOnce(null)
     const promise = sut.send(data)
     await expect(promise).rejects.toThrow()
+  })
+
+  it('Should call EmailService with correct value', async () => {
+    const { sut, emailServiceStub } = makeSut()
+    const sendEmailSpy = jest.spyOn(emailServiceStub, 'send')
+    await sut.send(data)
+    expect(sendEmailSpy).toHaveBeenCalledWith({
+      from: 'contato.petjournal@gmail.com',
+      to: 'any_email@mail.com',
+      subject: 'Ative sua conta',
+      text: `
+          Olá any_first_name any_last_name,\n
+          Acesse o link para ativar sua conta: http://localhost:3333/api/guardian/email-confirmation/any_id
+        `
+    })
   })
 })
