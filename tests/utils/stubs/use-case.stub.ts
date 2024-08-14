@@ -237,9 +237,7 @@ const makeLoadDogBreedsUseCase = (): LoadDogBreeds => {
 
 const makeFakeSendEmailUseCase = (): SendEmail => {
   class SendEmailStub implements SendEmail {
-    async send (data: SendEmail.Params): Promise<SendEmail.Result> {
-      return true
-    }
+    async send (data: SendEmail.Params): Promise<SendEmail.Result> {}
   }
   return new SendEmailStub()
 }

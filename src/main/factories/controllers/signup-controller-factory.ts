@@ -9,9 +9,7 @@ export const makeSignUpController = (): Controller => {
   const addGuardian = makeDbAddGuardian()
   const validation = makeSignUpValidation()
   const sendEmail: SendEmail = {
-    send: async () => {
-      return true
-    }
+    send: async () => {}
   }
   const dependencies: SignUpController.Dependencies = {
     addGuardian,
