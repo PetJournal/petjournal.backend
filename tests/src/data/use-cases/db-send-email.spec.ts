@@ -9,4 +9,12 @@ describe('DbSendEmail', () => {
     await sut.send({ email: 'any_email' })
     expect(loadByEmailSpy).toHaveBeenCalledWith('any_email')
   })
+
+  it('Should throw if GuardianRepository throws', async () => {
+    const guardianRepositoryStub = makeFakeGuardianRepository()
+    const sut = new DbSendEmail({ guardianService: guardianRepositoryStub })
+    jest.spyOn(guardianRepositoryStub, 'loadByEmail').mockRejectedValueOnce(new Error())
+    const promise = sut.send({ email: 'any_email' })
+    await expect(promise).rejects.toThrow()
+  })
 })
