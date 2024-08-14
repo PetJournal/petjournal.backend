@@ -32,4 +32,11 @@ describe('DbSendEmail', () => {
     const promise = sut.send(data)
     await expect(promise).rejects.toThrow()
   })
+
+  it('Should throw if GuardianRepository returns null', async () => {
+    const { sut, guardianRepositoryStub } = makeSut()
+    jest.spyOn(guardianRepositoryStub, 'loadByEmail').mockResolvedValueOnce(null)
+    const promise = sut.send(data)
+    await expect(promise).rejects.toThrow()
+  })
 })
