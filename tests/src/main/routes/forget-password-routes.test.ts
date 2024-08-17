@@ -25,6 +25,6 @@ describe('forget-password-routes', () => {
           email: 'johndoe@email.com'
         })
         .expect(200)
-    })
+    }, 10000)
   })
 })

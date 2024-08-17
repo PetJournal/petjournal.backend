@@ -1,15 +1,17 @@
-import { type Controller } from '@/application/protocols'
 import { SignUpController } from '@/application/controllers'
+import { type Controller } from '@/application/protocols'
 import { LoggerPgRepository } from '@/infra/repos/postgresql'
 import { DevLoggerControllerDecorator, LoggerControllerDecorator } from '@/main/decorators'
-import { makeSignUpValidation, makeDbAddGuardian } from '@/main/factories'
+import { makeDbAddGuardian, makeDbSendEmail, makeSignUpValidation } from '@/main/factories'
 
 export const makeSignUpController = (): Controller => {
   const addGuardian = makeDbAddGuardian()
   const validation = makeSignUpValidation()
+  const sendEmail = makeDbSendEmail()
   const dependencies: SignUpController.Dependencies = {
     addGuardian,
-    validation
+    validation,
+    sendEmail
   }
   const signUpController = new SignUpController(dependencies)
   const loggerPgRepository = new LoggerPgRepository()
