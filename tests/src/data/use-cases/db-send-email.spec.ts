@@ -58,4 +58,11 @@ describe('DbSendEmail', () => {
         `
     })
   })
+
+  it('Should throw if EmailService throws', async () => {
+    const { sut, emailServiceStub } = makeSut()
+    jest.spyOn(emailServiceStub, 'send').mockRejectedValueOnce(new Error())
+    const promise = sut.send(data)
+    await expect(promise).rejects.toThrow()
+  })
 })
