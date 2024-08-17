@@ -183,7 +183,8 @@ const mockFakeGuardianLoaded = (): Exclude<LoadGuardianByIdRepository.Result, un
     phone: 'any_phone',
     accessToken: 'any_hashed_token',
     verificationToken: 'any_verification_token',
-    verificationTokenCreatedAt: new Date()
+    verificationTokenCreatedAt: new Date(),
+    emailConfirmation: true
   }
 }
 

@@ -7,7 +7,7 @@ beforeEach(async () => { await PrismaHelper.connect() })
 afterEach(async () => { await PrismaHelper.disconnect() })
 
 const makeSetup = async (): Promise<{ accessToken: string }> => {
-  await request(app)
+  const guardian = await request(app)
     .post('/api/signup')
     .send({
       firstName: 'John',
@@ -18,6 +18,9 @@ const makeSetup = async (): Promise<{ accessToken: string }> => {
       phone: '11987654321',
       isPrivacyPolicyAccepted: true
     })
+
+  await request(app)
+    .patch(`/api/guardian/email-confirmation/${guardian.body.id as string}`)
 
   const { body } = await request(app)
     .post('/api/login')
