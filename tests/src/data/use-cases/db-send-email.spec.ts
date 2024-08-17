@@ -1,3 +1,4 @@
+import { NotFoundError } from '@/application/errors'
 import { type EmailService, type LoadGuardianByEmailRepository } from '@/data/protocols'
 import { DbSendEmail } from '@/data/use-cases'
 import { makeFakeEmailService, makeFakeGuardianRepository } from '@/tests/utils'
@@ -37,11 +38,11 @@ describe('DbSendEmail', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  it('Should throw if GuardianRepository returns null', async () => {
+  it('Should throw NotFoundError if GuardianRepository returns null', async () => {
     const { sut, guardianRepositoryStub } = makeSut()
     jest.spyOn(guardianRepositoryStub, 'loadByEmail').mockResolvedValueOnce(null)
     const promise = sut.send(data)
-    await expect(promise).rejects.toThrow()
+    await expect(promise).rejects.toThrow(new NotFoundError('guardian'))
   })
 
   it('Should call EmailService with correct value', async () => {

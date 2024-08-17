@@ -1,6 +1,7 @@
 import { type SendEmail } from '@/domain/use-cases'
 import { type EmailService, type LoadGuardianByEmailRepository } from '../protocols'
 import env from '@/main/config/env'
+import { NotFoundError } from '@/application/errors'
 
 export class DbSendEmail implements SendEmail {
   private readonly guardianRepository: LoadGuardianByEmailRepository
@@ -14,7 +15,7 @@ export class DbSendEmail implements SendEmail {
   async send ({ email }: SendEmail.Params): Promise<SendEmail.Result> {
     const guardian = await this.guardianRepository.loadByEmail(email)
     if (!guardian) {
-      throw new Error('Guardian not found')
+      throw new NotFoundError('guardian')
     }
 
     await this.emailService.send({
