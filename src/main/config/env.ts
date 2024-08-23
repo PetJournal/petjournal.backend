@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 export default {
+  host: process.env.HOST_URL ?? 'http://localhost:3333',
   port: process.env.PORT ?? 3333,
   salt: process.env.SALT ?? 12,
   secret: process.env.SECRET ?? 'secret',
