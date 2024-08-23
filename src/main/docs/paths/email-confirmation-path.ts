@@ -1,5 +1,5 @@
 export const emailConfirmationPath = {
-  patch: {
+  get: {
     tags: ['guardian'],
     summary: 'confirm email of guardian',
     description: '',

@@ -21,7 +21,7 @@ describe('EmailConfirmation route', () => {
       })
 
     await request(app)
-      .patch(`/api/guardian/email-confirmation/${user.body.id as string}`)
+      .get(`/api/guardian/email-confirmation/${user.body.id as string}`)
       .expect(200)
   })
 
@@ -39,7 +39,7 @@ describe('EmailConfirmation route', () => {
       })
 
     await request(app)
-      .patch('/api/guardian/email-confirmation/invalid_user_id')
+      .get('/api/guardian/email-confirmation/invalid_user_id')
       .expect(400)
   })
 })

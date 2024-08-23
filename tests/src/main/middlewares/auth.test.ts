@@ -56,7 +56,7 @@ describe('Authentication Middleware', () => {
       })
 
     await request(app)
-      .patch(`/api/guardian/email-confirmation/${guardian.body.id as string}`)
+      .get(`/api/guardian/email-confirmation/${guardian.body.id as string}`)
 
     const { body: { accessToken } } = await request(app)
       .post('/api/login')

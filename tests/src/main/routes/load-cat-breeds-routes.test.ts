@@ -20,7 +20,7 @@ describe('LoadCatBreeds route', () => {
       })
 
     await request(app)
-      .patch(`/api/guardian/email-confirmation/${guardian.body.id as string}`)
+      .get(`/api/guardian/email-confirmation/${guardian.body.id as string}`)
 
     const { body } = await request(app)
       .post('/api/login')

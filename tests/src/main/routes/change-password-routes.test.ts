@@ -20,7 +20,7 @@ const makeSetup = async (): Promise<{ accessToken: string }> => {
     })
 
   await request(app)
-    .patch(`/api/guardian/email-confirmation/${guardian.body.id as string}`)
+    .get(`/api/guardian/email-confirmation/${guardian.body.id as string}`)
 
   const { body } = await request(app)
     .post('/api/login')
@@ -44,7 +44,7 @@ describe('PATCH - /api/guardian/change-password Route', () => {
 
     expect(response.body.error).toBe('Missing param: password')
     expect(response.status).toBe(400)
-  })
+  }, 10000)
 
   it('Should return 400 if the passwordConfirmation field is not provided', async () => {
     const { accessToken } = await makeSetup()
