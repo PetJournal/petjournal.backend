@@ -24,7 +24,7 @@ export class DbSendEmail implements SendEmail {
       subject: 'Ative sua conta',
       text: `
           Olá ${guardian.firstName} ${guardian.lastName},\n
-          Acesse o link para ativar sua conta: http://localhost:${env.port}/api/guardian/email-confirmation/${guardian.id}
+          Acesse o link para ativar sua conta: ${env.host}/api/guardian/email-confirmation/${guardian.id}
         `
     })
   }
