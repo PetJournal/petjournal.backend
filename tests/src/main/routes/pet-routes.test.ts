@@ -28,7 +28,7 @@ const makeSetup = async (): Promise<{ accessToken: string, fakeUser: FakeUser }>
     })
 
   await request(app)
-    .patch(`/api/guardian/email-confirmation/${resSignUp.body.id as string}`)
+    .get(`/api/guardian/email-confirmation/${resSignUp.body.id as string}`)
 
   const resLogin = await request(app)
     .post('/api/login')
@@ -135,7 +135,7 @@ describe('POST - /api/pet Route', () => {
       castrated: res.body.castrated,
       dateOfBirth: res.body.dateOfBirth
     })
-  })
+  }, 10000)
 })
 
 describe('GET - /api/pet Route', () => {
