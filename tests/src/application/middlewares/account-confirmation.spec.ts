@@ -1,4 +1,5 @@
-import { serverError } from '@/application/helpers'
+import { NotFoundError } from '@/application/errors'
+import { serverError, unauthorized } from '@/application/helpers'
 import { AccountConfirmationMiddleware } from '@/application/middlewares/account-confirmation'
 import { type LoadGuardianByEmailRepository } from '@/data/protocols'
 import { makeFakeGuardianRepository } from '@/tests/utils'
@@ -38,6 +39,13 @@ describe('AccountConfirmationMiddleware', () => {
       jest.spyOn(guardianRepositoryStub, 'loadByEmail').mockRejectedValueOnce(new Error())
       const httpResponse = await sut.handle(httpRequest)
       expect(httpResponse).toEqual(serverError(new Error()))
+    })
+
+    it('Should return 401 (Unauthorized) if guardian emailConfirmation is false', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      jest.spyOn(guardianRepositoryStub, 'loadByEmail').mockResolvedValueOnce(null)
+      const httpResponse = await sut.handle(httpRequest)
+      expect(httpResponse).toEqual(unauthorized(new NotFoundError('User not found')))
     })
   })
 })
