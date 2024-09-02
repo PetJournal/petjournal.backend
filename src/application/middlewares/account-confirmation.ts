@@ -1,6 +1,6 @@
 import { type LoadGuardianByEmailRepository } from '@/data/protocols'
 import { type Middleware } from '../protocols'
-import { success, type HttpRequest, type HttpResponse } from '../helpers'
+import { serverError, success, type HttpRequest, type HttpResponse } from '../helpers'
 
 export class AccountConfirmationMiddleware implements Middleware {
   private readonly guardianRepository: LoadGuardianByEmailRepository
@@ -10,10 +10,14 @@ export class AccountConfirmationMiddleware implements Middleware {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { email } = httpRequest.body
-    await this.guardianRepository.loadByEmail(email)
+    try {
+      const { email } = httpRequest.body
+      await this.guardianRepository.loadByEmail(email)
 
-    return success(null)
+      return success(null)
+    } catch (error) {
+      return serverError(error as Error)
+    }
   }
 }
 
