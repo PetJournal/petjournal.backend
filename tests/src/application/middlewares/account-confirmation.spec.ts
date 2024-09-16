@@ -1,5 +1,5 @@
 import { EmailConfirmationError, NotFoundError } from '@/application/errors'
-import { serverError, unauthorized } from '@/application/helpers'
+import { next, serverError, unauthorized } from '@/application/helpers'
 import { AccountConfirmationMiddleware } from '@/application/middlewares/account-confirmation'
 import { type LoadGuardianByEmailRepository } from '@/data/protocols'
 import {
@@ -72,6 +72,12 @@ describe('AccountConfirmationMiddleware', () => {
       expect(httpResponse).toEqual(
         unauthorized(new EmailConfirmationError('your email are not confirmed'))
       )
+    })
+
+    it('Should return 100 (Continue) on success', async () => {
+      const { sut } = makeSut()
+      const httpResponse = await sut.handle(httpRequest)
+      expect(httpResponse).toEqual(next())
     })
   })
 })
