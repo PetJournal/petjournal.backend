@@ -1,14 +1,14 @@
 import { EmailConfirmationError, NotFoundError } from '@/application/errors'
-import { next, serverError, unauthorized } from '@/application/helpers'
+import { type HttpRequest, next, serverError, unauthorized } from '@/application/helpers'
 import { AccountConfirmationMiddleware } from '@/application/middlewares/account-confirmation'
-import { type LoadGuardianByEmailRepository } from '@/data/protocols'
+import { type LoadGuardianByIdRepository, type LoadGuardianByEmailRepository } from '@/data/protocols'
 import {
   makeFakeGuardianRepository
 } from '@/tests/utils'
 
 interface SutTypes {
   sut: AccountConfirmationMiddleware
-  guardianRepositoryStub: LoadGuardianByEmailRepository
+  guardianRepositoryStub: LoadGuardianByEmailRepository & LoadGuardianByIdRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -24,9 +24,9 @@ const makeSut = (): SutTypes => {
 }
 
 describe('AccountConfirmationMiddleware', () => {
-  const httpRequest = {
+  const httpRequest: HttpRequest = {
     body: {
-      email: 'any_wmail@mail.com'
+      email: 'any_mail@mail.com'
     }
   }
 
@@ -36,6 +36,14 @@ describe('AccountConfirmationMiddleware', () => {
       const loadByEmailSpy = jest.spyOn(guardianRepositoryStub, 'loadByEmail')
       await sut.handle(httpRequest)
       expect(loadByEmailSpy).toBeCalledWith(httpRequest.body.email)
+    })
+
+    it('Should call loadById with correct value', async () => {
+      const { sut, guardianRepositoryStub } = makeSut()
+      const loadByIdSpy = jest.spyOn(guardianRepositoryStub, 'loadById')
+      const httpRequestWithUserId: HttpRequest = { body: {}, userId: 'any_user_id' }
+      await sut.handle(httpRequestWithUserId)
+      expect(loadByIdSpy).toHaveBeenCalledWith(httpRequestWithUserId.userId)
     })
 
     it('Shoul return 500 (ServerError) if loadByEmail method throws', async () => {
