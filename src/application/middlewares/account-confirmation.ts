@@ -1,10 +1,10 @@
-import { type LoadGuardianByEmailRepository } from '@/data/protocols'
+import { type LoadGuardianByIdRepository, type LoadGuardianByEmailRepository } from '@/data/protocols'
 import { EmailConfirmationError, NotFoundError } from '../errors'
 import { next, serverError, unauthorized, type HttpRequest, type HttpResponse } from '../helpers'
 import { type Middleware } from '../protocols'
 
 export class AccountConfirmationMiddleware implements Middleware {
-  private readonly guardianRepository: LoadGuardianByEmailRepository
+  private readonly guardianRepository: LoadGuardianByEmailRepository & LoadGuardianByIdRepository
 
   constructor ({ guardianRepository }: AccountConfirmationMiddleware.Dependencies) {
     this.guardianRepository = guardianRepository
@@ -12,8 +12,15 @@ export class AccountConfirmationMiddleware implements Middleware {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { email } = httpRequest.body
-      const guardian = await this.guardianRepository.loadByEmail(email)
+      let guardian
+      const { userId, body: { email } } = httpRequest
+
+      if (userId) {
+        guardian = await this.guardianRepository.loadById(userId)
+      } else {
+        guardian = await this.guardianRepository.loadByEmail(email)
+      }
+
       if (!guardian) {
         return unauthorized(new NotFoundError('User not found'))
       }
@@ -31,6 +38,6 @@ export class AccountConfirmationMiddleware implements Middleware {
 
 export namespace AccountConfirmationMiddleware {
   export interface Dependencies {
-    guardianRepository: LoadGuardianByEmailRepository
+    guardianRepository: LoadGuardianByEmailRepository & LoadGuardianByIdRepository
   }
 }
