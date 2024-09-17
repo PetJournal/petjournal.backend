@@ -1,6 +1,6 @@
-import { type LoadGuardianByIdRepository, type LoadGuardianByEmailRepository } from '@/data/protocols'
+import { type LoadGuardianByEmailRepository, type LoadGuardianByIdRepository } from '@/data/protocols'
 import { EmailConfirmationError, NotFoundError } from '../errors'
-import { next, serverError, unauthorized, type HttpRequest, type HttpResponse } from '../helpers'
+import { noContent, serverError, unauthorized, type HttpRequest, type HttpResponse } from '../helpers'
 import { type Middleware } from '../protocols'
 
 export class AccountConfirmationMiddleware implements Middleware {
@@ -29,7 +29,7 @@ export class AccountConfirmationMiddleware implements Middleware {
         return unauthorized(new EmailConfirmationError('your email are not confirmed'))
       }
 
-      return next()
+      return noContent()
     } catch (error) {
       return serverError(error as Error)
     }

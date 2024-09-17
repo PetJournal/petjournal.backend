@@ -47,7 +47,7 @@ export const create = (data: any): HttpResponse => ({
   body: data
 })
 
-export const next = (): HttpResponse => ({
-  statusCode: 100,
+export const noContent = (): HttpResponse => ({
+  statusCode: 204,
   body: null
 })
