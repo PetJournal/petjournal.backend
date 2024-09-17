@@ -8,7 +8,7 @@ afterEach(async () => { await PrismaHelper.disconnect() })
 
 describe('Login Routes', () => {
   it('Should return an access token on success', async () => {
-    await request(app)
+    const responseSignup = await request(app)
       .post('/api/signup')
       .send({
         firstName: 'John',
@@ -19,6 +19,8 @@ describe('Login Routes', () => {
         phone: '11987654321',
         isPrivacyPolicyAccepted: true
       })
+
+    await request(app).get(`/api/guardian/email-confirmation/${responseSignup.body.id as string}`)
 
     const response = await request(app)
       .post('/api/login')

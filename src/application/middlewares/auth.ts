@@ -12,7 +12,7 @@ import {
   badRequest,
   serverError
 } from '@/application/helpers'
-import { EmailConfirmationError, InvalidTokenError, MissingParamError, NotFoundError } from '@/application/errors'
+import { InvalidTokenError, MissingParamError, NotFoundError } from '@/application/errors'
 
 export class AuthMiddleware implements Middleware {
   private readonly tokenService: TokenDecoder
@@ -46,10 +46,6 @@ export class AuthMiddleware implements Middleware {
       const account = await this.guardianRepository.loadById(userId)
       if (!account) {
         return unauthorized(new NotFoundError('User not found'))
-      }
-
-      if (!account.emailConfirmation) {
-        return unauthorized(new EmailConfirmationError('your email are not confirmed'))
       }
 
       const matchToken = await this.hashService.compare({ hash: account.accessToken ?? '', value: authorization })
